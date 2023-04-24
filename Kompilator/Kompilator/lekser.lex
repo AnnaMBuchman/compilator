@@ -1,0 +1,61 @@
+﻿
+%using QUT.Gppg;
+%namespace Kompilator
+
+Ident       [a-zA-Z][A-z0-9]*
+IntNumber   ([1-9][0-9]*|0)
+RealNumber  ([1-9][0-9]*|0)\.[0-9]*
+Napis		\"(\\.|[^"\\])*\"
+Komentarz	\/\/.*$
+Komentarz2	\/\/.*
+
+%%
+
+"program"	{ yylval.line=yyline; yylval.val=yytext; return (int)Tokens.Program; }
+"if"		{ yylval.line=yyline; yylval.val=yytext; return (int)Tokens.If; }
+"else"		{ yylval.line=yyline; yylval.val=yytext; return (int)Tokens.Else; }
+"while"		{ yylval.line=yyline; yylval.val=yytext; return (int)Tokens.While; }
+"read"		{ yylval.line=yyline; yylval.val=yytext; return (int)Tokens.Read; }
+"write"		{ yylval.line=yyline; yylval.val=yytext; return (int)Tokens.Write; }
+"return"	{ yylval.line=yyline; yylval.val=yytext; return (int)Tokens.Return; }
+"int"		{ yylval.line=yyline; yylval.val=yytext; return (int)Tokens.Int; }
+"double"	{ yylval.line=yyline; yylval.val=yytext; return (int)Tokens.Double; }
+"bool"		{ yylval.line=yyline; yylval.val=yytext; return (int)Tokens.Bool; }
+"true"		{ yylval.line=yyline; yylval.val=yytext; return (int)Tokens.True; }
+"false"		{ yylval.line=yyline; yylval.val=yytext; return (int)Tokens.False; }
+
+{IntNumber}   { yylval.line=yyline; yylval.val=yytext; return (int)Tokens.IntNumber; }
+{RealNumber}  { yylval.line=yyline; yylval.val=yytext; return (int)Tokens.RealNumber; }
+{Ident}       { yylval.line=yyline; yylval.val=yytext; return (int)Tokens.Ident; }
+{Napis}		  { yylval.line=yyline; yylval.val=yytext; return (int)Tokens.Napis; }
+{Komentarz}	  { }
+{Komentarz2}	  { yylval.val=yytext; return (int)Tokens.Komentarz2; }
+ 
+"="           { yylval.line=yyline; return (int)Tokens.Assign; }
+"||"		  { yylval.line=yyline; return (int)Tokens.Or; }
+"&&"		  { yylval.line=yyline; return (int)Tokens.And; }
+"|"			  { yylval.line=yyline; return (int)Tokens.Pipe; }
+"&"			  { yylval.line=yyline; return (int)Tokens.BitAnd; }
+"=="		  { yylval.line=yyline; return (int)Tokens.Equal; }
+"!="		  { yylval.line=yyline; return (int)Tokens.NotEqual; }
+">"			  { yylval.line=yyline; return (int)Tokens.Greater; }
+">="		  { yylval.line=yyline; return (int)Tokens.GreaterEqual; }
+"<"			  { yylval.line=yyline; return (int)Tokens.Less; }
+"<="		  { yylval.line=yyline; return (int)Tokens.LessEqual; }
+"+"           { yylval.line=yyline; return (int)Tokens.Plus; }
+"-"           { yylval.line=yyline; return (int)Tokens.Minus; }
+"*"           { yylval.line=yyline; return (int)Tokens.Multiplies; }
+"/"           { yylval.line=yyline; return (int)Tokens.Divides; }
+"!"			  { yylval.line=yyline; return (int)Tokens.Not; }
+"~"			  { yylval.line=yyline; return (int)Tokens.Tilde; }
+"("           { yylval.line=yyline; return (int)Tokens.OpenPar; }
+")"           { yylval.line=yyline; return (int)Tokens.ClosePar; }
+"{"			  { yylval.line=yyline; return (int)Tokens.BracketLeft; }
+"}"			  { yylval.line=yyline; return (int)Tokens.BracketRight; }
+";"			  { yylval.line=yyline; return (int)Tokens.Semicolon; }
+"\r"          { }
+
+" "           { }
+"\t"          { }
+"\n"          { }
+.             { return (int)Tokens.Error; }

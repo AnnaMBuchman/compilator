@@ -1,0 +1,10 @@
+
+program {
+    int a;
+   double b;
+a=24+5;
+b=-27+99;//epopfvieop
+write a;
+write "\n";
+write b;
+}

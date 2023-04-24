@@ -1,0 +1,3508 @@
+<html><head><title>parser.y</title></head>
+<body bgcolor="white">
+<hr><pre>
+<b>Grammar and Diagnosis parser.y - 30/06/2020 21:46:55</b>
+
+<a name="prod1">    1</a> $accept: start EOF
+             ;
+
+<a name="prod2">    2</a> start: start line
+<a name="prod3">    3</a>      | line
+           ;
+
+<a name="prod4">    4</a> line: Program BracketLeft block BracketRight
+<a name="prod5">    5</a>     | Program BracketLeft block BracketRight Komentarz2
+<a name="prod6">    6</a>     | Program BracketLeft BracketRight Komentarz2
+<a name="prod7">    7</a>     | Program BracketLeft BracketRight
+<a name="prod8">    8</a>     | Program Eof
+<a name="prod9">    9</a>     | error
+          ;
+
+<a name="prod10">   10</a> block: declars instrs
+           ;
+
+<a name="prod11">   11</a> declars: declars declar
+<a name="prod12">   12</a>        | /* empty */
+             ;
+
+<a name="prod13">   13</a> instrs: /* empty */
+<a name="prod14">   14</a>       | instrs instr
+            ;
+
+<a name="prod15">   15</a> declar: typ Ident Semicolon
+<a name="prod16">   16</a>       | error
+            ;
+
+<a name="prod17">   17</a> typ: Int
+<a name="prod18">   18</a>    | Double
+<a name="prod19">   19</a>    | Bool
+         ;
+
+<a name="prod20">   20</a> instr: BracketLeft BracketRight
+<a name="prod21">   21</a>      | BracketLeft instrs BracketRight
+<a name="prod22">   22</a>      | exp Semicolon
+<a name="prod23">   23</a>      | cond
+<a name="prod24">   24</a>      | whileLoop
+<a name="prod25">   25</a>      | inRead
+<a name="prod26">   26</a>      | outWrite
+<a name="prod27">   27</a>      | Return Semicolon
+<a name="prod28">   28</a>      | error
+           ;
+
+<a name="prod29">   29</a> cond: If OpenPar exp ClosePar instr
+<a name="prod30">   30</a>     | If OpenPar exp ClosePar instr Else instr
+          ;
+
+<a name="prod31">   31</a> whileLoop: While OpenPar exp ClosePar instr
+               ;
+
+<a name="prod32">   32</a> inRead: Read Ident Semicolon
+            ;
+
+<a name="prod33">   33</a> outWrite: Write exp Semicolon
+<a name="prod34">   34</a>         | Write Napis Semicolon
+<a name="prod35">   35</a>         | Write OpenPar Napis ClosePar Semicolon
+              ;
+
+<a name="prod36">   36</a> exp: OpenPar exp ClosePar
+<a name="prod37">   37</a>    | Ident Assign logic
+<a name="prod38">   38</a>    | logic
+         ;
+
+<a name="prod39">   39</a> logic: logic Or rel
+<a name="prod40">   40</a>      | logic And rel
+<a name="prod41">   41</a>      | rel
+           ;
+
+<a name="prod42">   42</a> rel: rel Equal adding
+<a name="prod43">   43</a>    | rel NotEqual adding
+<a name="prod44">   44</a>    | rel Greater adding
+<a name="prod45">   45</a>    | rel GreaterEqual adding
+<a name="prod46">   46</a>    | rel Less adding
+<a name="prod47">   47</a>    | rel LessEqual adding
+<a name="prod48">   48</a>    | adding
+         ;
+
+<a name="prod49">   49</a> adding: adding Plus term
+<a name="prod50">   50</a>       | adding Minus term
+<a name="prod51">   51</a>       | term
+            ;
+
+<a name="prod52">   52</a> term: term Multiplies bitexp
+<a name="prod53">   53</a>     | term Divides bitexp
+<a name="prod54">   54</a>     | bitexp
+          ;
+
+<a name="prod55">   55</a> bitexp: bitexp Pipe unar
+<a name="prod56">   56</a>       | bitexp BitAnd unar
+<a name="prod57">   57</a>       | unar
+            ;
+
+<a name="prod58">   58</a> unar: Minus unar
+<a name="prod59">   59</a>     | Tilde unar
+<a name="prod60">   60</a>     | Not unar
+<a name="prod61">   61</a>     | OpenPar Int ClosePar unar
+<a name="prod62">   62</a>     | OpenPar Double ClosePar unar
+<a name="prod63">   63</a>     | factor
+          ;
+
+<a name="prod64">   64</a> factor: OpenPar exp ClosePar
+<a name="prod65">   65</a>       | IntNumber
+<a name="prod66">   66</a>       | RealNumber
+<a name="prod67">   67</a>       | Ident
+<a name="prod68">   68</a>       | boolVar
+            ;
+
+<a name="prod69">   69</a> boolVar: True
+<a name="prod70">   70</a>        | False
+             ;
+<b><a name="state0">State</a> <a href="#state0">0</a></b>
+    Shortest prefix: 
+    Shortest path: <a href="#state0">0</a>
+    Predecessors: 
+
+  <b>Kernel Items</b>
+    1 $accept: . start EOF
+
+  <b>Parser Actions</b>
+    Program        shift, and go to state <a href="#state4">4</a>
+    error          shift, and go to state <a href="#state122">122</a>
+
+  <b>Transitions</b>
+    start          go to state <a href="#state1">1</a>
+    line           go to state <a href="#state123">123</a>
+
+
+<b><a name="state1">State</a> <a href="#state1">1</a></b>
+    Shortest prefix: start
+    Shortest path: <a href="#state0">0</a>-><a href="#state1">1</a>
+    Predecessors: <a href="#state0">0</a>
+
+  <b>Kernel Items</b>
+    1 $accept: start . EOF
+    2 start: start . line
+
+  <b>Parser Actions</b>
+    EOF            shift, and go to state <a href="#state2">2</a>
+    Program        shift, and go to state <a href="#state4">4</a>
+    error          shift, and go to state <a href="#state122">122</a>
+
+  <b>Transitions</b>
+    line           go to state <a href="#state3">3</a>
+
+
+<b><a name="state2">State</a> <a href="#state2">2</a></b>
+    Shortest prefix: start EOF
+    Shortest path: <a href="#state0">0</a>-><a href="#state1">1</a>-><a href="#state2">2</a>
+    Predecessors: <a href="#state1">1</a>
+
+  <b>Kernel Items</b>
+    1 $accept: start EOF .
+	-lookahead: {  }
+
+  <b>Parser Actions</b>
+    error          reduce using <a href="#prod1">rule 1</a> ($accept)
+    EOF            reduce using <a href="#prod1">rule 1</a> ($accept)
+    Program        reduce using <a href="#prod1">rule 1</a> ($accept)
+    Assign         reduce using <a href="#prod1">rule 1</a> ($accept)
+    Or             reduce using <a href="#prod1">rule 1</a> ($accept)
+    And            reduce using <a href="#prod1">rule 1</a> ($accept)
+    Pipe           reduce using <a href="#prod1">rule 1</a> ($accept)
+    Equal          reduce using <a href="#prod1">rule 1</a> ($accept)
+    NotEqual       reduce using <a href="#prod1">rule 1</a> ($accept)
+    BitAnd         reduce using <a href="#prod1">rule 1</a> ($accept)
+    Greater        reduce using <a href="#prod1">rule 1</a> ($accept)
+    GreaterEqual   reduce using <a href="#prod1">rule 1</a> ($accept)
+    Less           reduce using <a href="#prod1">rule 1</a> ($accept)
+    LessEqual      reduce using <a href="#prod1">rule 1</a> ($accept)
+    Plus           reduce using <a href="#prod1">rule 1</a> ($accept)
+    Minus          reduce using <a href="#prod1">rule 1</a> ($accept)
+    Multiplies     reduce using <a href="#prod1">rule 1</a> ($accept)
+    Divides        reduce using <a href="#prod1">rule 1</a> ($accept)
+    Tilde          reduce using <a href="#prod1">rule 1</a> ($accept)
+    Not            reduce using <a href="#prod1">rule 1</a> ($accept)
+    If             reduce using <a href="#prod1">rule 1</a> ($accept)
+    Else           reduce using <a href="#prod1">rule 1</a> ($accept)
+    While          reduce using <a href="#prod1">rule 1</a> ($accept)
+    Read           reduce using <a href="#prod1">rule 1</a> ($accept)
+    Write          reduce using <a href="#prod1">rule 1</a> ($accept)
+    OpenPar        reduce using <a href="#prod1">rule 1</a> ($accept)
+    ClosePar       reduce using <a href="#prod1">rule 1</a> ($accept)
+    BracketLeft    reduce using <a href="#prod1">rule 1</a> ($accept)
+    BracketRight   reduce using <a href="#prod1">rule 1</a> ($accept)
+    Semicolon      reduce using <a href="#prod1">rule 1</a> ($accept)
+    Endl           reduce using <a href="#prod1">rule 1</a> ($accept)
+    Eof            reduce using <a href="#prod1">rule 1</a> ($accept)
+    Error          reduce using <a href="#prod1">rule 1</a> ($accept)
+    Int            reduce using <a href="#prod1">rule 1</a> ($accept)
+    Double         reduce using <a href="#prod1">rule 1</a> ($accept)
+    Bool           reduce using <a href="#prod1">rule 1</a> ($accept)
+    Ident          reduce using <a href="#prod1">rule 1</a> ($accept)
+    IntNumber      reduce using <a href="#prod1">rule 1</a> ($accept)
+    RealNumber     reduce using <a href="#prod1">rule 1</a> ($accept)
+    Napis          reduce using <a href="#prod1">rule 1</a> ($accept)
+    Komentarz2     reduce using <a href="#prod1">rule 1</a> ($accept)
+    True           reduce using <a href="#prod1">rule 1</a> ($accept)
+    False          reduce using <a href="#prod1">rule 1</a> ($accept)
+    Return         reduce using <a href="#prod1">rule 1</a> ($accept)
+
+
+
+<b><a name="state3">State</a> <a href="#state3">3</a></b>
+    Shortest prefix: start line
+    Shortest path: <a href="#state0">0</a>-><a href="#state1">1</a>-><a href="#state3">3</a>
+    Predecessors: <a href="#state1">1</a>
+
+  <b>Kernel Items</b>
+    2 start: start line .
+	-lookahead: { EOF, Program, error }
+
+  <b>Parser Actions</b>
+    EOF            reduce using <a href="#prod2">rule 2</a> (start)
+    Program        reduce using <a href="#prod2">rule 2</a> (start)
+    error          reduce using <a href="#prod2">rule 2</a> (start)
+
+
+
+<b><a name="state4">State</a> <a href="#state4">4</a></b>
+    Shortest prefix: Program
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>
+    Predecessors: <a href="#state0">0</a>, <a href="#state1">1</a>
+
+  <b>Kernel Items</b>
+    4 line: Program . BracketLeft block BracketRight
+    5 line: Program . BracketLeft block BracketRight Komentarz2
+    6 line: Program . BracketLeft BracketRight Komentarz2
+    7 line: Program . BracketLeft BracketRight
+    8 line: Program . Eof
+
+  <b>Parser Actions</b>
+    BracketLeft    shift, and go to state <a href="#state5">5</a>
+    Eof            shift, and go to state <a href="#state121">121</a>
+
+
+
+<b><a name="state5">State</a> <a href="#state5">5</a></b>
+    Shortest prefix: Program BracketLeft
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>
+    Predecessors: <a href="#state4">4</a>
+
+  <b>Kernel Items</b>
+    4 line: Program BracketLeft . block BracketRight
+    5 line: Program BracketLeft . block BracketRight Komentarz2
+    6 line: Program BracketLeft . BracketRight Komentarz2
+    7 line: Program BracketLeft . BracketRight
+
+    <b>Conflicts in this state</b>
+      Shift/Reduce conflict on symbol "BracketRight", parser will shift
+       Shift "BracketRight":	State-5 -> State-9
+       Reduce 12:	declars -> /* empty */
+      ---------
+
+  <b>Parser Actions</b>
+    BracketRight   shift, and go to state <a href="#state9">9</a>
+    Int            reduce using <a href="#prod12">rule 12</a> (Erasing declars)
+    Double         reduce using <a href="#prod12">rule 12</a> (Erasing declars)
+    Bool           reduce using <a href="#prod12">rule 12</a> (Erasing declars)
+    error          reduce using <a href="#prod12">rule 12</a> (Erasing declars)
+    BracketLeft    reduce using <a href="#prod12">rule 12</a> (Erasing declars)
+    OpenPar        reduce using <a href="#prod12">rule 12</a> (Erasing declars)
+    Ident          reduce using <a href="#prod12">rule 12</a> (Erasing declars)
+    Minus          reduce using <a href="#prod12">rule 12</a> (Erasing declars)
+    Tilde          reduce using <a href="#prod12">rule 12</a> (Erasing declars)
+    Not            reduce using <a href="#prod12">rule 12</a> (Erasing declars)
+    IntNumber      reduce using <a href="#prod12">rule 12</a> (Erasing declars)
+    RealNumber     reduce using <a href="#prod12">rule 12</a> (Erasing declars)
+    True           reduce using <a href="#prod12">rule 12</a> (Erasing declars)
+    False          reduce using <a href="#prod12">rule 12</a> (Erasing declars)
+    If             reduce using <a href="#prod12">rule 12</a> (Erasing declars)
+    While          reduce using <a href="#prod12">rule 12</a> (Erasing declars)
+    Read           reduce using <a href="#prod12">rule 12</a> (Erasing declars)
+    Write          reduce using <a href="#prod12">rule 12</a> (Erasing declars)
+    Return         reduce using <a href="#prod12">rule 12</a> (Erasing declars)
+
+  <b>Transitions</b>
+    block          go to state <a href="#state6">6</a>
+    declars        go to state <a href="#state11">11</a>
+
+
+<b><a name="state6">State</a> <a href="#state6">6</a></b>
+    Shortest prefix: Program BracketLeft
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state6">6</a>
+    Predecessors: <a href="#state5">5</a>
+
+  <b>Kernel Items</b>
+    4 line: Program BracketLeft block . BracketRight
+    5 line: Program BracketLeft block . BracketRight Komentarz2
+
+  <b>Parser Actions</b>
+    BracketRight   shift, and go to state <a href="#state7">7</a>
+
+
+
+<b><a name="state7">State</a> <a href="#state7">7</a></b>
+    Shortest prefix: Program BracketLeft BracketRight
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state6">6</a>-><a href="#state7">7</a>
+    Predecessors: <a href="#state6">6</a>
+
+  <b>Kernel Items</b>
+    4 line: Program BracketLeft block BracketRight .
+	-lookahead: { EOF, Program, error }
+    5 line: Program BracketLeft block BracketRight . Komentarz2
+
+  <b>Parser Actions</b>
+    Komentarz2     shift, and go to state <a href="#state8">8</a>
+    EOF            reduce using <a href="#prod4">rule 4</a> (line)
+    Program        reduce using <a href="#prod4">rule 4</a> (line)
+    error          reduce using <a href="#prod4">rule 4</a> (line)
+
+
+
+<b><a name="state8">State</a> <a href="#state8">8</a></b>
+    Shortest prefix: Program BracketLeft BracketRight Komentarz2
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state6">6</a>-><a href="#state7">7</a>-><a href="#state8">8</a>
+    Predecessors: <a href="#state7">7</a>
+
+  <b>Kernel Items</b>
+    5 line: Program BracketLeft block BracketRight Komentarz2 .
+	-lookahead: { EOF, Program, error }
+
+  <b>Parser Actions</b>
+    EOF            reduce using <a href="#prod5">rule 5</a> (line)
+    Program        reduce using <a href="#prod5">rule 5</a> (line)
+    error          reduce using <a href="#prod5">rule 5</a> (line)
+
+
+
+<b><a name="state9">State</a> <a href="#state9">9</a></b>
+    Shortest prefix: Program BracketLeft BracketRight
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state9">9</a>
+    Predecessors: <a href="#state5">5</a>
+
+  <b>Kernel Items</b>
+    6 line: Program BracketLeft BracketRight . Komentarz2
+    7 line: Program BracketLeft BracketRight .
+	-lookahead: { EOF, Program, error }
+
+  <b>Parser Actions</b>
+    Komentarz2     shift, and go to state <a href="#state10">10</a>
+    EOF            reduce using <a href="#prod7">rule 7</a> (line)
+    Program        reduce using <a href="#prod7">rule 7</a> (line)
+    error          reduce using <a href="#prod7">rule 7</a> (line)
+
+
+
+<b><a name="state10">State</a> <a href="#state10">10</a></b>
+    Shortest prefix: Program BracketLeft BracketRight Komentarz2
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state9">9</a>-><a href="#state10">10</a>
+    Predecessors: <a href="#state9">9</a>
+
+  <b>Kernel Items</b>
+    6 line: Program BracketLeft BracketRight Komentarz2 .
+	-lookahead: { EOF, Program, error }
+
+  <b>Parser Actions</b>
+    EOF            reduce using <a href="#prod6">rule 6</a> (line)
+    Program        reduce using <a href="#prod6">rule 6</a> (line)
+    error          reduce using <a href="#prod6">rule 6</a> (line)
+
+
+
+<b><a name="state11">State</a> <a href="#state11">11</a></b>
+    Shortest prefix: Program BracketLeft
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>
+    Predecessors: <a href="#state5">5</a>
+
+  <b>Kernel Items</b>
+    10 block: declars . instrs
+    11 declars: declars . declar
+
+    <b>Conflicts in this state</b>
+      Shift/Reduce conflict on symbol "error", parser will shift
+       Shift "error":	State-11 -> State-120
+       Reduce 13:	instrs -> /* empty */
+      ---------
+
+  <b>Parser Actions</b>
+    Int            shift, and go to state <a href="#state117">117</a>
+    Double         shift, and go to state <a href="#state118">118</a>
+    Bool           shift, and go to state <a href="#state119">119</a>
+    error          shift, and go to state <a href="#state120">120</a>
+    BracketLeft    reduce using <a href="#prod13">rule 13</a> (Erasing instrs)
+    OpenPar        reduce using <a href="#prod13">rule 13</a> (Erasing instrs)
+    Ident          reduce using <a href="#prod13">rule 13</a> (Erasing instrs)
+    Minus          reduce using <a href="#prod13">rule 13</a> (Erasing instrs)
+    Tilde          reduce using <a href="#prod13">rule 13</a> (Erasing instrs)
+    Not            reduce using <a href="#prod13">rule 13</a> (Erasing instrs)
+    IntNumber      reduce using <a href="#prod13">rule 13</a> (Erasing instrs)
+    RealNumber     reduce using <a href="#prod13">rule 13</a> (Erasing instrs)
+    True           reduce using <a href="#prod13">rule 13</a> (Erasing instrs)
+    False          reduce using <a href="#prod13">rule 13</a> (Erasing instrs)
+    If             reduce using <a href="#prod13">rule 13</a> (Erasing instrs)
+    While          reduce using <a href="#prod13">rule 13</a> (Erasing instrs)
+    Read           reduce using <a href="#prod13">rule 13</a> (Erasing instrs)
+    Write          reduce using <a href="#prod13">rule 13</a> (Erasing instrs)
+    Return         reduce using <a href="#prod13">rule 13</a> (Erasing instrs)
+    BracketRight   reduce using <a href="#prod13">rule 13</a> (Erasing instrs)
+
+  <b>Transitions</b>
+    instrs         go to state <a href="#state12">12</a>
+    declar         go to state <a href="#state113">113</a>
+    typ            go to state <a href="#state114">114</a>
+
+
+<b><a name="state12">State</a> <a href="#state12">12</a></b>
+    Shortest prefix: Program BracketLeft
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>
+    Predecessors: <a href="#state11">11</a>
+
+  <b>Kernel Items</b>
+    10 block: declars instrs .
+	-lookahead: { BracketRight }
+    14 instrs: instrs . instr
+
+  <b>Parser Actions</b>
+    BracketLeft    shift, and go to state <a href="#state14">14</a>
+    OpenPar        shift, and go to state <a href="#state20">20</a>
+    Ident          shift, and go to state <a href="#state45">45</a>
+    Minus          shift, and go to state <a href="#state26">26</a>
+    Tilde          shift, and go to state <a href="#state28">28</a>
+    Not            shift, and go to state <a href="#state30">30</a>
+    IntNumber      shift, and go to state <a href="#state37">37</a>
+    RealNumber     shift, and go to state <a href="#state38">38</a>
+    True           shift, and go to state <a href="#state41">41</a>
+    False          shift, and go to state <a href="#state42">42</a>
+    If             shift, and go to state <a href="#state83">83</a>
+    While          shift, and go to state <a href="#state91">91</a>
+    Read           shift, and go to state <a href="#state97">97</a>
+    Write          shift, and go to state <a href="#state101">101</a>
+    Return         shift, and go to state <a href="#state110">110</a>
+    error          shift, and go to state <a href="#state112">112</a>
+    BracketRight   reduce using <a href="#prod10">rule 10</a> (block)
+
+  <b>Transitions</b>
+    instr          go to state <a href="#state13">13</a>
+    exp            go to state <a href="#state18">18</a>
+    logic          go to state <a href="#state81">81</a>
+    rel            go to state <a href="#state80">80</a>
+    adding         go to state <a href="#state77">77</a>
+    term           go to state <a href="#state66">66</a>
+    bitexp         go to state <a href="#state63">63</a>
+    unar           go to state <a href="#state60">60</a>
+    factor         go to state <a href="#state36">36</a>
+    boolVar        go to state <a href="#state40">40</a>
+    cond           go to state <a href="#state82">82</a>
+    whileLoop      go to state <a href="#state90">90</a>
+    inRead         go to state <a href="#state96">96</a>
+    outWrite       go to state <a href="#state100">100</a>
+
+
+<b><a name="state13">State</a> <a href="#state13">13</a></b>
+    Shortest prefix: Program BracketLeft instr
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state13">13</a>
+    Predecessors: <a href="#state12">12</a>, <a href="#state16">16</a>
+
+  <b>Kernel Items</b>
+    14 instrs: instrs instr .
+	-lookahead: { BracketLeft, OpenPar, Ident, Minus, Tilde, Not, IntNumber, 
+                RealNumber, True, False, If, While, Read, Write, Return, 
+                error, BracketRight }
+
+  <b>Parser Actions</b>
+    BracketLeft    reduce using <a href="#prod14">rule 14</a> (instrs)
+    OpenPar        reduce using <a href="#prod14">rule 14</a> (instrs)
+    Ident          reduce using <a href="#prod14">rule 14</a> (instrs)
+    Minus          reduce using <a href="#prod14">rule 14</a> (instrs)
+    Tilde          reduce using <a href="#prod14">rule 14</a> (instrs)
+    Not            reduce using <a href="#prod14">rule 14</a> (instrs)
+    IntNumber      reduce using <a href="#prod14">rule 14</a> (instrs)
+    RealNumber     reduce using <a href="#prod14">rule 14</a> (instrs)
+    True           reduce using <a href="#prod14">rule 14</a> (instrs)
+    False          reduce using <a href="#prod14">rule 14</a> (instrs)
+    If             reduce using <a href="#prod14">rule 14</a> (instrs)
+    While          reduce using <a href="#prod14">rule 14</a> (instrs)
+    Read           reduce using <a href="#prod14">rule 14</a> (instrs)
+    Write          reduce using <a href="#prod14">rule 14</a> (instrs)
+    Return         reduce using <a href="#prod14">rule 14</a> (instrs)
+    error          reduce using <a href="#prod14">rule 14</a> (instrs)
+    BracketRight   reduce using <a href="#prod14">rule 14</a> (instrs)
+
+
+
+<b><a name="state14">State</a> <a href="#state14">14</a></b>
+    Shortest prefix: Program BracketLeft BracketLeft
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state14">14</a>
+    Predecessors: <a href="#state12">12</a>, <a href="#state16">16</a>, <a href="#state86">86</a>, <a href="#state88">88</a>, <a href="#state94">94</a>
+
+  <b>Kernel Items</b>
+    20 instr: BracketLeft . BracketRight
+    21 instr: BracketLeft . instrs BracketRight
+
+    <b>Conflicts in this state</b>
+      Shift/Reduce conflict on symbol "BracketRight", parser will shift
+       Shift "BracketRight":	State-14 -> State-15
+       Reduce 13:	instrs -> /* empty */
+      ---------
+
+  <b>Parser Actions</b>
+    BracketRight   shift, and go to state <a href="#state15">15</a>
+    BracketLeft    reduce using <a href="#prod13">rule 13</a> (Erasing instrs)
+    OpenPar        reduce using <a href="#prod13">rule 13</a> (Erasing instrs)
+    Ident          reduce using <a href="#prod13">rule 13</a> (Erasing instrs)
+    Minus          reduce using <a href="#prod13">rule 13</a> (Erasing instrs)
+    Tilde          reduce using <a href="#prod13">rule 13</a> (Erasing instrs)
+    Not            reduce using <a href="#prod13">rule 13</a> (Erasing instrs)
+    IntNumber      reduce using <a href="#prod13">rule 13</a> (Erasing instrs)
+    RealNumber     reduce using <a href="#prod13">rule 13</a> (Erasing instrs)
+    True           reduce using <a href="#prod13">rule 13</a> (Erasing instrs)
+    False          reduce using <a href="#prod13">rule 13</a> (Erasing instrs)
+    If             reduce using <a href="#prod13">rule 13</a> (Erasing instrs)
+    While          reduce using <a href="#prod13">rule 13</a> (Erasing instrs)
+    Read           reduce using <a href="#prod13">rule 13</a> (Erasing instrs)
+    Write          reduce using <a href="#prod13">rule 13</a> (Erasing instrs)
+    Return         reduce using <a href="#prod13">rule 13</a> (Erasing instrs)
+    error          reduce using <a href="#prod13">rule 13</a> (Erasing instrs)
+
+  <b>Transitions</b>
+    instrs         go to state <a href="#state16">16</a>
+
+
+<b><a name="state15">State</a> <a href="#state15">15</a></b>
+    Shortest prefix: Program BracketLeft BracketLeft BracketRight
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state14">14</a>-><a href="#state15">15</a>
+    Predecessors: <a href="#state14">14</a>
+
+  <b>Kernel Items</b>
+    20 instr: BracketLeft BracketRight .
+	-lookahead: { BracketLeft, OpenPar, Ident, Minus, Tilde, Not, IntNumber, 
+                RealNumber, True, False, If, While, Read, Write, Return, 
+                error, BracketRight, Else }
+
+  <b>Parser Actions</b>
+    BracketLeft    reduce using <a href="#prod20">rule 20</a> (instr)
+    OpenPar        reduce using <a href="#prod20">rule 20</a> (instr)
+    Ident          reduce using <a href="#prod20">rule 20</a> (instr)
+    Minus          reduce using <a href="#prod20">rule 20</a> (instr)
+    Tilde          reduce using <a href="#prod20">rule 20</a> (instr)
+    Not            reduce using <a href="#prod20">rule 20</a> (instr)
+    IntNumber      reduce using <a href="#prod20">rule 20</a> (instr)
+    RealNumber     reduce using <a href="#prod20">rule 20</a> (instr)
+    True           reduce using <a href="#prod20">rule 20</a> (instr)
+    False          reduce using <a href="#prod20">rule 20</a> (instr)
+    If             reduce using <a href="#prod20">rule 20</a> (instr)
+    While          reduce using <a href="#prod20">rule 20</a> (instr)
+    Read           reduce using <a href="#prod20">rule 20</a> (instr)
+    Write          reduce using <a href="#prod20">rule 20</a> (instr)
+    Return         reduce using <a href="#prod20">rule 20</a> (instr)
+    error          reduce using <a href="#prod20">rule 20</a> (instr)
+    BracketRight   reduce using <a href="#prod20">rule 20</a> (instr)
+    Else           reduce using <a href="#prod20">rule 20</a> (instr)
+
+
+
+<b><a name="state16">State</a> <a href="#state16">16</a></b>
+    Shortest prefix: Program BracketLeft BracketLeft
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state14">14</a>-><a href="#state16">16</a>
+    Predecessors: <a href="#state14">14</a>
+
+  <b>Kernel Items</b>
+    21 instr: BracketLeft instrs . BracketRight
+    14 instrs: instrs . instr
+
+  <b>Parser Actions</b>
+    BracketRight   shift, and go to state <a href="#state17">17</a>
+    BracketLeft    shift, and go to state <a href="#state14">14</a>
+    OpenPar        shift, and go to state <a href="#state20">20</a>
+    Ident          shift, and go to state <a href="#state45">45</a>
+    Minus          shift, and go to state <a href="#state26">26</a>
+    Tilde          shift, and go to state <a href="#state28">28</a>
+    Not            shift, and go to state <a href="#state30">30</a>
+    IntNumber      shift, and go to state <a href="#state37">37</a>
+    RealNumber     shift, and go to state <a href="#state38">38</a>
+    True           shift, and go to state <a href="#state41">41</a>
+    False          shift, and go to state <a href="#state42">42</a>
+    If             shift, and go to state <a href="#state83">83</a>
+    While          shift, and go to state <a href="#state91">91</a>
+    Read           shift, and go to state <a href="#state97">97</a>
+    Write          shift, and go to state <a href="#state101">101</a>
+    Return         shift, and go to state <a href="#state110">110</a>
+    error          shift, and go to state <a href="#state112">112</a>
+
+  <b>Transitions</b>
+    instr          go to state <a href="#state13">13</a>
+    exp            go to state <a href="#state18">18</a>
+    logic          go to state <a href="#state81">81</a>
+    rel            go to state <a href="#state80">80</a>
+    adding         go to state <a href="#state77">77</a>
+    term           go to state <a href="#state66">66</a>
+    bitexp         go to state <a href="#state63">63</a>
+    unar           go to state <a href="#state60">60</a>
+    factor         go to state <a href="#state36">36</a>
+    boolVar        go to state <a href="#state40">40</a>
+    cond           go to state <a href="#state82">82</a>
+    whileLoop      go to state <a href="#state90">90</a>
+    inRead         go to state <a href="#state96">96</a>
+    outWrite       go to state <a href="#state100">100</a>
+
+
+<b><a name="state17">State</a> <a href="#state17">17</a></b>
+    Shortest prefix: Program BracketLeft BracketLeft BracketRight
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state14">14</a>-><a href="#state16">16</a>-><a href="#state17">17</a>
+    Predecessors: <a href="#state16">16</a>
+
+  <b>Kernel Items</b>
+    21 instr: BracketLeft instrs BracketRight .
+	-lookahead: { BracketLeft, OpenPar, Ident, Minus, Tilde, Not, IntNumber, 
+                RealNumber, True, False, If, While, Read, Write, Return, 
+                error, BracketRight, Else }
+
+  <b>Parser Actions</b>
+    BracketLeft    reduce using <a href="#prod21">rule 21</a> (instr)
+    OpenPar        reduce using <a href="#prod21">rule 21</a> (instr)
+    Ident          reduce using <a href="#prod21">rule 21</a> (instr)
+    Minus          reduce using <a href="#prod21">rule 21</a> (instr)
+    Tilde          reduce using <a href="#prod21">rule 21</a> (instr)
+    Not            reduce using <a href="#prod21">rule 21</a> (instr)
+    IntNumber      reduce using <a href="#prod21">rule 21</a> (instr)
+    RealNumber     reduce using <a href="#prod21">rule 21</a> (instr)
+    True           reduce using <a href="#prod21">rule 21</a> (instr)
+    False          reduce using <a href="#prod21">rule 21</a> (instr)
+    If             reduce using <a href="#prod21">rule 21</a> (instr)
+    While          reduce using <a href="#prod21">rule 21</a> (instr)
+    Read           reduce using <a href="#prod21">rule 21</a> (instr)
+    Write          reduce using <a href="#prod21">rule 21</a> (instr)
+    Return         reduce using <a href="#prod21">rule 21</a> (instr)
+    error          reduce using <a href="#prod21">rule 21</a> (instr)
+    BracketRight   reduce using <a href="#prod21">rule 21</a> (instr)
+    Else           reduce using <a href="#prod21">rule 21</a> (instr)
+
+
+
+<b><a name="state18">State</a> <a href="#state18">18</a></b>
+    Shortest prefix: Program BracketLeft exp
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state18">18</a>
+    Predecessors: <a href="#state12">12</a>, <a href="#state16">16</a>, <a href="#state86">86</a>, <a href="#state88">88</a>, <a href="#state94">94</a>
+
+  <b>Kernel Items</b>
+    22 instr: exp . Semicolon
+
+  <b>Parser Actions</b>
+    Semicolon      shift, and go to state <a href="#state19">19</a>
+
+
+
+<b><a name="state19">State</a> <a href="#state19">19</a></b>
+    Shortest prefix: Program BracketLeft exp Semicolon
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state18">18</a>-><a href="#state19">19</a>
+    Predecessors: <a href="#state18">18</a>
+
+  <b>Kernel Items</b>
+    22 instr: exp Semicolon .
+	-lookahead: { BracketLeft, OpenPar, Ident, Minus, Tilde, Not, IntNumber, 
+                RealNumber, True, False, If, While, Read, Write, Return, 
+                error, BracketRight, Else }
+
+  <b>Parser Actions</b>
+    BracketLeft    reduce using <a href="#prod22">rule 22</a> (instr)
+    OpenPar        reduce using <a href="#prod22">rule 22</a> (instr)
+    Ident          reduce using <a href="#prod22">rule 22</a> (instr)
+    Minus          reduce using <a href="#prod22">rule 22</a> (instr)
+    Tilde          reduce using <a href="#prod22">rule 22</a> (instr)
+    Not            reduce using <a href="#prod22">rule 22</a> (instr)
+    IntNumber      reduce using <a href="#prod22">rule 22</a> (instr)
+    RealNumber     reduce using <a href="#prod22">rule 22</a> (instr)
+    True           reduce using <a href="#prod22">rule 22</a> (instr)
+    False          reduce using <a href="#prod22">rule 22</a> (instr)
+    If             reduce using <a href="#prod22">rule 22</a> (instr)
+    While          reduce using <a href="#prod22">rule 22</a> (instr)
+    Read           reduce using <a href="#prod22">rule 22</a> (instr)
+    Write          reduce using <a href="#prod22">rule 22</a> (instr)
+    Return         reduce using <a href="#prod22">rule 22</a> (instr)
+    error          reduce using <a href="#prod22">rule 22</a> (instr)
+    BracketRight   reduce using <a href="#prod22">rule 22</a> (instr)
+    Else           reduce using <a href="#prod22">rule 22</a> (instr)
+
+
+
+<b><a name="state20">State</a> <a href="#state20">20</a></b>
+    Shortest prefix: Program BracketLeft OpenPar
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state20">20</a>
+    Predecessors: <a href="#state12">12</a>, <a href="#state16">16</a>, <a href="#state20">20</a>, <a href="#state32">32</a>, <a href="#state84">84</a>, <a href="#state86">86</a>, <a href="#state88">88</a>, <a href="#state92">92</a>, <a href="#state94">94</a>, <a href="#state106">106</a>
+
+  <b>Kernel Items</b>
+    36 exp: OpenPar . exp ClosePar
+    61 unar: OpenPar . Int ClosePar unar
+    62 unar: OpenPar . Double ClosePar unar
+    64 factor: OpenPar . exp ClosePar
+
+  <b>Parser Actions</b>
+    Int            shift, and go to state <a href="#state23">23</a>
+    Double         shift, and go to state <a href="#state33">33</a>
+    OpenPar        shift, and go to state <a href="#state20">20</a>
+    Ident          shift, and go to state <a href="#state45">45</a>
+    Minus          shift, and go to state <a href="#state26">26</a>
+    Tilde          shift, and go to state <a href="#state28">28</a>
+    Not            shift, and go to state <a href="#state30">30</a>
+    IntNumber      shift, and go to state <a href="#state37">37</a>
+    RealNumber     shift, and go to state <a href="#state38">38</a>
+    True           shift, and go to state <a href="#state41">41</a>
+    False          shift, and go to state <a href="#state42">42</a>
+
+  <b>Transitions</b>
+    exp            go to state <a href="#state21">21</a>
+    logic          go to state <a href="#state81">81</a>
+    rel            go to state <a href="#state80">80</a>
+    adding         go to state <a href="#state77">77</a>
+    term           go to state <a href="#state66">66</a>
+    bitexp         go to state <a href="#state63">63</a>
+    unar           go to state <a href="#state60">60</a>
+    factor         go to state <a href="#state36">36</a>
+    boolVar        go to state <a href="#state40">40</a>
+
+
+<b><a name="state21">State</a> <a href="#state21">21</a></b>
+    Shortest prefix: Program BracketLeft OpenPar exp
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state20">20</a>-><a href="#state21">21</a>
+    Predecessors: <a href="#state20">20</a>, <a href="#state106">106</a>
+
+  <b>Kernel Items</b>
+    36 exp: OpenPar exp . ClosePar
+    64 factor: OpenPar exp . ClosePar
+
+  <b>Parser Actions</b>
+    ClosePar       shift, and go to state <a href="#state22">22</a>
+
+
+
+<b><a name="state22">State</a> <a href="#state22">22</a></b>
+    Shortest prefix: Program BracketLeft OpenPar exp ClosePar
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state20">20</a>-><a href="#state21">21</a>-><a href="#state22">22</a>
+    Predecessors: <a href="#state21">21</a>
+
+  <b>Kernel Items</b>
+    36 exp: OpenPar exp ClosePar .
+	-lookahead: { Semicolon, ClosePar }
+    64 factor: OpenPar exp ClosePar .
+	-lookahead: { Pipe, BitAnd, Multiplies, Divides, Plus, Minus, Equal, NotEqual, 
+                Greater, GreaterEqual, Less, LessEqual, Or, And, Semicolon, 
+                ClosePar }
+
+    <b>Conflicts in this state</b>
+      Reduce/Reduce conflict on symbol "Semicolon", parser will reduce production 36
+       Reduce 36:	exp -> OpenPar, exp, ClosePar
+       Reduce 64:	factor -> OpenPar, exp, ClosePar
+      ---------
+      Reduce/Reduce conflict on symbol "ClosePar", parser will reduce production 36
+       Reduce 36:	exp -> OpenPar, exp, ClosePar
+       Reduce 64:	factor -> OpenPar, exp, ClosePar
+      ---------
+
+  <b>Parser Actions</b>
+    Semicolon      reduce using <a href="#prod36">rule 36</a> (exp)
+    ClosePar       reduce using <a href="#prod36">rule 36</a> (exp)
+    Pipe           reduce using <a href="#prod64">rule 64</a> (factor)
+    BitAnd         reduce using <a href="#prod64">rule 64</a> (factor)
+    Multiplies     reduce using <a href="#prod64">rule 64</a> (factor)
+    Divides        reduce using <a href="#prod64">rule 64</a> (factor)
+    Plus           reduce using <a href="#prod64">rule 64</a> (factor)
+    Minus          reduce using <a href="#prod64">rule 64</a> (factor)
+    Equal          reduce using <a href="#prod64">rule 64</a> (factor)
+    NotEqual       reduce using <a href="#prod64">rule 64</a> (factor)
+    Greater        reduce using <a href="#prod64">rule 64</a> (factor)
+    GreaterEqual   reduce using <a href="#prod64">rule 64</a> (factor)
+    Less           reduce using <a href="#prod64">rule 64</a> (factor)
+    LessEqual      reduce using <a href="#prod64">rule 64</a> (factor)
+    Or             reduce using <a href="#prod64">rule 64</a> (factor)
+    And            reduce using <a href="#prod64">rule 64</a> (factor)
+
+
+
+<b><a name="state23">State</a> <a href="#state23">23</a></b>
+    Shortest prefix: Program BracketLeft OpenPar Int
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state20">20</a>-><a href="#state23">23</a>
+    Predecessors: <a href="#state20">20</a>, <a href="#state32">32</a>, <a href="#state106">106</a>
+
+  <b>Kernel Items</b>
+    61 unar: OpenPar Int . ClosePar unar
+
+  <b>Parser Actions</b>
+    ClosePar       shift, and go to state <a href="#state24">24</a>
+
+
+
+<b><a name="state24">State</a> <a href="#state24">24</a></b>
+    Shortest prefix: Program BracketLeft OpenPar Int ClosePar
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state20">20</a>-><a href="#state23">23</a>-><a href="#state24">24</a>
+    Predecessors: <a href="#state23">23</a>
+
+  <b>Kernel Items</b>
+    61 unar: OpenPar Int ClosePar . unar
+
+  <b>Parser Actions</b>
+    Minus          shift, and go to state <a href="#state26">26</a>
+    Tilde          shift, and go to state <a href="#state28">28</a>
+    Not            shift, and go to state <a href="#state30">30</a>
+    OpenPar        shift, and go to state <a href="#state32">32</a>
+    IntNumber      shift, and go to state <a href="#state37">37</a>
+    RealNumber     shift, and go to state <a href="#state38">38</a>
+    Ident          shift, and go to state <a href="#state39">39</a>
+    True           shift, and go to state <a href="#state41">41</a>
+    False          shift, and go to state <a href="#state42">42</a>
+
+  <b>Transitions</b>
+    unar           go to state <a href="#state25">25</a>
+    factor         go to state <a href="#state36">36</a>
+    boolVar        go to state <a href="#state40">40</a>
+
+
+<b><a name="state25">State</a> <a href="#state25">25</a></b>
+    Shortest prefix: Program BracketLeft OpenPar Int ClosePar unar
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state20">20</a>-><a href="#state23">23</a>-><a href="#state24">24</a>-><a href="#state25">25</a>
+    Predecessors: <a href="#state24">24</a>
+
+  <b>Kernel Items</b>
+    61 unar: OpenPar Int ClosePar unar .
+	-lookahead: { Pipe, BitAnd, Multiplies, Divides, Plus, Minus, Equal, NotEqual, 
+                Greater, GreaterEqual, Less, LessEqual, Or, And, Semicolon, 
+                ClosePar }
+
+  <b>Parser Actions</b>
+    Pipe           reduce using <a href="#prod61">rule 61</a> (unar)
+    BitAnd         reduce using <a href="#prod61">rule 61</a> (unar)
+    Multiplies     reduce using <a href="#prod61">rule 61</a> (unar)
+    Divides        reduce using <a href="#prod61">rule 61</a> (unar)
+    Plus           reduce using <a href="#prod61">rule 61</a> (unar)
+    Minus          reduce using <a href="#prod61">rule 61</a> (unar)
+    Equal          reduce using <a href="#prod61">rule 61</a> (unar)
+    NotEqual       reduce using <a href="#prod61">rule 61</a> (unar)
+    Greater        reduce using <a href="#prod61">rule 61</a> (unar)
+    GreaterEqual   reduce using <a href="#prod61">rule 61</a> (unar)
+    Less           reduce using <a href="#prod61">rule 61</a> (unar)
+    LessEqual      reduce using <a href="#prod61">rule 61</a> (unar)
+    Or             reduce using <a href="#prod61">rule 61</a> (unar)
+    And            reduce using <a href="#prod61">rule 61</a> (unar)
+    Semicolon      reduce using <a href="#prod61">rule 61</a> (unar)
+    ClosePar       reduce using <a href="#prod61">rule 61</a> (unar)
+
+
+
+<b><a name="state26">State</a> <a href="#state26">26</a></b>
+    Shortest prefix: Program BracketLeft Minus
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state26">26</a>
+    Predecessors: <a href="#state12">12</a>, <a href="#state16">16</a>, <a href="#state20">20</a>, <a href="#state24">24</a>, <a href="#state26">26</a>, <a href="#state28">28</a>, <a href="#state30">30</a>, <a href="#state32">32</a>, <a href="#state34">34</a>, <a href="#state46">46</a>, <a href="#state48">48</a>, <a href="#state50">50</a>, <a href="#state52">52</a>, <a href="#state54">54</a>, <a href="#state56">56</a>, <a href="#state58">58</a>, 
+                  <a href="#state61">61</a>, <a href="#state64">64</a>, <a href="#state67">67</a>, <a href="#state69">69</a>, <a href="#state71">71</a>, <a href="#state73">73</a>, <a href="#state75">75</a>, <a href="#state78">78</a>, <a href="#state84">84</a>, <a href="#state86">86</a>, <a href="#state88">88</a>, <a href="#state92">92</a>, <a href="#state94">94</a>, <a href="#state101">101</a>, <a href="#state106">106</a>
+
+  <b>Kernel Items</b>
+    58 unar: Minus . unar
+
+  <b>Parser Actions</b>
+    Minus          shift, and go to state <a href="#state26">26</a>
+    Tilde          shift, and go to state <a href="#state28">28</a>
+    Not            shift, and go to state <a href="#state30">30</a>
+    OpenPar        shift, and go to state <a href="#state32">32</a>
+    IntNumber      shift, and go to state <a href="#state37">37</a>
+    RealNumber     shift, and go to state <a href="#state38">38</a>
+    Ident          shift, and go to state <a href="#state39">39</a>
+    True           shift, and go to state <a href="#state41">41</a>
+    False          shift, and go to state <a href="#state42">42</a>
+
+  <b>Transitions</b>
+    unar           go to state <a href="#state27">27</a>
+    factor         go to state <a href="#state36">36</a>
+    boolVar        go to state <a href="#state40">40</a>
+
+
+<b><a name="state27">State</a> <a href="#state27">27</a></b>
+    Shortest prefix: Program BracketLeft Minus unar
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state26">26</a>-><a href="#state27">27</a>
+    Predecessors: <a href="#state26">26</a>
+
+  <b>Kernel Items</b>
+    58 unar: Minus unar .
+	-lookahead: { Pipe, BitAnd, Multiplies, Divides, Plus, Minus, Equal, NotEqual, 
+                Greater, GreaterEqual, Less, LessEqual, Or, And, Semicolon, 
+                ClosePar }
+
+  <b>Parser Actions</b>
+    Pipe           reduce using <a href="#prod58">rule 58</a> (unar)
+    BitAnd         reduce using <a href="#prod58">rule 58</a> (unar)
+    Multiplies     reduce using <a href="#prod58">rule 58</a> (unar)
+    Divides        reduce using <a href="#prod58">rule 58</a> (unar)
+    Plus           reduce using <a href="#prod58">rule 58</a> (unar)
+    Minus          reduce using <a href="#prod58">rule 58</a> (unar)
+    Equal          reduce using <a href="#prod58">rule 58</a> (unar)
+    NotEqual       reduce using <a href="#prod58">rule 58</a> (unar)
+    Greater        reduce using <a href="#prod58">rule 58</a> (unar)
+    GreaterEqual   reduce using <a href="#prod58">rule 58</a> (unar)
+    Less           reduce using <a href="#prod58">rule 58</a> (unar)
+    LessEqual      reduce using <a href="#prod58">rule 58</a> (unar)
+    Or             reduce using <a href="#prod58">rule 58</a> (unar)
+    And            reduce using <a href="#prod58">rule 58</a> (unar)
+    Semicolon      reduce using <a href="#prod58">rule 58</a> (unar)
+    ClosePar       reduce using <a href="#prod58">rule 58</a> (unar)
+
+
+
+<b><a name="state28">State</a> <a href="#state28">28</a></b>
+    Shortest prefix: Program BracketLeft Tilde
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state28">28</a>
+    Predecessors: <a href="#state12">12</a>, <a href="#state16">16</a>, <a href="#state20">20</a>, <a href="#state24">24</a>, <a href="#state26">26</a>, <a href="#state28">28</a>, <a href="#state30">30</a>, <a href="#state32">32</a>, <a href="#state34">34</a>, <a href="#state46">46</a>, <a href="#state48">48</a>, <a href="#state50">50</a>, <a href="#state52">52</a>, <a href="#state54">54</a>, <a href="#state56">56</a>, <a href="#state58">58</a>, 
+                  <a href="#state61">61</a>, <a href="#state64">64</a>, <a href="#state67">67</a>, <a href="#state69">69</a>, <a href="#state71">71</a>, <a href="#state73">73</a>, <a href="#state75">75</a>, <a href="#state78">78</a>, <a href="#state84">84</a>, <a href="#state86">86</a>, <a href="#state88">88</a>, <a href="#state92">92</a>, <a href="#state94">94</a>, <a href="#state101">101</a>, <a href="#state106">106</a>
+
+  <b>Kernel Items</b>
+    59 unar: Tilde . unar
+
+  <b>Parser Actions</b>
+    Minus          shift, and go to state <a href="#state26">26</a>
+    Tilde          shift, and go to state <a href="#state28">28</a>
+    Not            shift, and go to state <a href="#state30">30</a>
+    OpenPar        shift, and go to state <a href="#state32">32</a>
+    IntNumber      shift, and go to state <a href="#state37">37</a>
+    RealNumber     shift, and go to state <a href="#state38">38</a>
+    Ident          shift, and go to state <a href="#state39">39</a>
+    True           shift, and go to state <a href="#state41">41</a>
+    False          shift, and go to state <a href="#state42">42</a>
+
+  <b>Transitions</b>
+    unar           go to state <a href="#state29">29</a>
+    factor         go to state <a href="#state36">36</a>
+    boolVar        go to state <a href="#state40">40</a>
+
+
+<b><a name="state29">State</a> <a href="#state29">29</a></b>
+    Shortest prefix: Program BracketLeft Tilde unar
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state28">28</a>-><a href="#state29">29</a>
+    Predecessors: <a href="#state28">28</a>
+
+  <b>Kernel Items</b>
+    59 unar: Tilde unar .
+	-lookahead: { Pipe, BitAnd, Multiplies, Divides, Plus, Minus, Equal, NotEqual, 
+                Greater, GreaterEqual, Less, LessEqual, Or, And, Semicolon, 
+                ClosePar }
+
+  <b>Parser Actions</b>
+    Pipe           reduce using <a href="#prod59">rule 59</a> (unar)
+    BitAnd         reduce using <a href="#prod59">rule 59</a> (unar)
+    Multiplies     reduce using <a href="#prod59">rule 59</a> (unar)
+    Divides        reduce using <a href="#prod59">rule 59</a> (unar)
+    Plus           reduce using <a href="#prod59">rule 59</a> (unar)
+    Minus          reduce using <a href="#prod59">rule 59</a> (unar)
+    Equal          reduce using <a href="#prod59">rule 59</a> (unar)
+    NotEqual       reduce using <a href="#prod59">rule 59</a> (unar)
+    Greater        reduce using <a href="#prod59">rule 59</a> (unar)
+    GreaterEqual   reduce using <a href="#prod59">rule 59</a> (unar)
+    Less           reduce using <a href="#prod59">rule 59</a> (unar)
+    LessEqual      reduce using <a href="#prod59">rule 59</a> (unar)
+    Or             reduce using <a href="#prod59">rule 59</a> (unar)
+    And            reduce using <a href="#prod59">rule 59</a> (unar)
+    Semicolon      reduce using <a href="#prod59">rule 59</a> (unar)
+    ClosePar       reduce using <a href="#prod59">rule 59</a> (unar)
+
+
+
+<b><a name="state30">State</a> <a href="#state30">30</a></b>
+    Shortest prefix: Program BracketLeft Not
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state30">30</a>
+    Predecessors: <a href="#state12">12</a>, <a href="#state16">16</a>, <a href="#state20">20</a>, <a href="#state24">24</a>, <a href="#state26">26</a>, <a href="#state28">28</a>, <a href="#state30">30</a>, <a href="#state32">32</a>, <a href="#state34">34</a>, <a href="#state46">46</a>, <a href="#state48">48</a>, <a href="#state50">50</a>, <a href="#state52">52</a>, <a href="#state54">54</a>, <a href="#state56">56</a>, <a href="#state58">58</a>, 
+                  <a href="#state61">61</a>, <a href="#state64">64</a>, <a href="#state67">67</a>, <a href="#state69">69</a>, <a href="#state71">71</a>, <a href="#state73">73</a>, <a href="#state75">75</a>, <a href="#state78">78</a>, <a href="#state84">84</a>, <a href="#state86">86</a>, <a href="#state88">88</a>, <a href="#state92">92</a>, <a href="#state94">94</a>, <a href="#state101">101</a>, <a href="#state106">106</a>
+
+  <b>Kernel Items</b>
+    60 unar: Not . unar
+
+  <b>Parser Actions</b>
+    Minus          shift, and go to state <a href="#state26">26</a>
+    Tilde          shift, and go to state <a href="#state28">28</a>
+    Not            shift, and go to state <a href="#state30">30</a>
+    OpenPar        shift, and go to state <a href="#state32">32</a>
+    IntNumber      shift, and go to state <a href="#state37">37</a>
+    RealNumber     shift, and go to state <a href="#state38">38</a>
+    Ident          shift, and go to state <a href="#state39">39</a>
+    True           shift, and go to state <a href="#state41">41</a>
+    False          shift, and go to state <a href="#state42">42</a>
+
+  <b>Transitions</b>
+    unar           go to state <a href="#state31">31</a>
+    factor         go to state <a href="#state36">36</a>
+    boolVar        go to state <a href="#state40">40</a>
+
+
+<b><a name="state31">State</a> <a href="#state31">31</a></b>
+    Shortest prefix: Program BracketLeft Not unar
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state30">30</a>-><a href="#state31">31</a>
+    Predecessors: <a href="#state30">30</a>
+
+  <b>Kernel Items</b>
+    60 unar: Not unar .
+	-lookahead: { Pipe, BitAnd, Multiplies, Divides, Plus, Minus, Equal, NotEqual, 
+                Greater, GreaterEqual, Less, LessEqual, Or, And, Semicolon, 
+                ClosePar }
+
+  <b>Parser Actions</b>
+    Pipe           reduce using <a href="#prod60">rule 60</a> (unar)
+    BitAnd         reduce using <a href="#prod60">rule 60</a> (unar)
+    Multiplies     reduce using <a href="#prod60">rule 60</a> (unar)
+    Divides        reduce using <a href="#prod60">rule 60</a> (unar)
+    Plus           reduce using <a href="#prod60">rule 60</a> (unar)
+    Minus          reduce using <a href="#prod60">rule 60</a> (unar)
+    Equal          reduce using <a href="#prod60">rule 60</a> (unar)
+    NotEqual       reduce using <a href="#prod60">rule 60</a> (unar)
+    Greater        reduce using <a href="#prod60">rule 60</a> (unar)
+    GreaterEqual   reduce using <a href="#prod60">rule 60</a> (unar)
+    Less           reduce using <a href="#prod60">rule 60</a> (unar)
+    LessEqual      reduce using <a href="#prod60">rule 60</a> (unar)
+    Or             reduce using <a href="#prod60">rule 60</a> (unar)
+    And            reduce using <a href="#prod60">rule 60</a> (unar)
+    Semicolon      reduce using <a href="#prod60">rule 60</a> (unar)
+    ClosePar       reduce using <a href="#prod60">rule 60</a> (unar)
+
+
+
+<b><a name="state32">State</a> <a href="#state32">32</a></b>
+    Shortest prefix: Program BracketLeft Minus OpenPar
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state26">26</a>-><a href="#state32">32</a>
+    Predecessors: <a href="#state24">24</a>, <a href="#state26">26</a>, <a href="#state28">28</a>, <a href="#state30">30</a>, <a href="#state34">34</a>, <a href="#state46">46</a>, <a href="#state48">48</a>, <a href="#state50">50</a>, <a href="#state52">52</a>, <a href="#state54">54</a>, <a href="#state56">56</a>, <a href="#state58">58</a>, <a href="#state61">61</a>, <a href="#state64">64</a>, <a href="#state67">67</a>, <a href="#state69">69</a>, 
+                  <a href="#state71">71</a>, <a href="#state73">73</a>, <a href="#state75">75</a>, <a href="#state78">78</a>
+
+  <b>Kernel Items</b>
+    61 unar: OpenPar . Int ClosePar unar
+    62 unar: OpenPar . Double ClosePar unar
+    64 factor: OpenPar . exp ClosePar
+
+  <b>Parser Actions</b>
+    Int            shift, and go to state <a href="#state23">23</a>
+    Double         shift, and go to state <a href="#state33">33</a>
+    OpenPar        shift, and go to state <a href="#state20">20</a>
+    Ident          shift, and go to state <a href="#state45">45</a>
+    Minus          shift, and go to state <a href="#state26">26</a>
+    Tilde          shift, and go to state <a href="#state28">28</a>
+    Not            shift, and go to state <a href="#state30">30</a>
+    IntNumber      shift, and go to state <a href="#state37">37</a>
+    RealNumber     shift, and go to state <a href="#state38">38</a>
+    True           shift, and go to state <a href="#state41">41</a>
+    False          shift, and go to state <a href="#state42">42</a>
+
+  <b>Transitions</b>
+    exp            go to state <a href="#state43">43</a>
+    logic          go to state <a href="#state81">81</a>
+    rel            go to state <a href="#state80">80</a>
+    adding         go to state <a href="#state77">77</a>
+    term           go to state <a href="#state66">66</a>
+    bitexp         go to state <a href="#state63">63</a>
+    unar           go to state <a href="#state60">60</a>
+    factor         go to state <a href="#state36">36</a>
+    boolVar        go to state <a href="#state40">40</a>
+
+
+<b><a name="state33">State</a> <a href="#state33">33</a></b>
+    Shortest prefix: Program BracketLeft OpenPar Double
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state20">20</a>-><a href="#state33">33</a>
+    Predecessors: <a href="#state20">20</a>, <a href="#state32">32</a>, <a href="#state106">106</a>
+
+  <b>Kernel Items</b>
+    62 unar: OpenPar Double . ClosePar unar
+
+  <b>Parser Actions</b>
+    ClosePar       shift, and go to state <a href="#state34">34</a>
+
+
+
+<b><a name="state34">State</a> <a href="#state34">34</a></b>
+    Shortest prefix: Program BracketLeft OpenPar Double ClosePar
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state20">20</a>-><a href="#state33">33</a>-><a href="#state34">34</a>
+    Predecessors: <a href="#state33">33</a>
+
+  <b>Kernel Items</b>
+    62 unar: OpenPar Double ClosePar . unar
+
+  <b>Parser Actions</b>
+    Minus          shift, and go to state <a href="#state26">26</a>
+    Tilde          shift, and go to state <a href="#state28">28</a>
+    Not            shift, and go to state <a href="#state30">30</a>
+    OpenPar        shift, and go to state <a href="#state32">32</a>
+    IntNumber      shift, and go to state <a href="#state37">37</a>
+    RealNumber     shift, and go to state <a href="#state38">38</a>
+    Ident          shift, and go to state <a href="#state39">39</a>
+    True           shift, and go to state <a href="#state41">41</a>
+    False          shift, and go to state <a href="#state42">42</a>
+
+  <b>Transitions</b>
+    unar           go to state <a href="#state35">35</a>
+    factor         go to state <a href="#state36">36</a>
+    boolVar        go to state <a href="#state40">40</a>
+
+
+<b><a name="state35">State</a> <a href="#state35">35</a></b>
+    Shortest prefix: Program BracketLeft OpenPar Double ClosePar unar
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state20">20</a>-><a href="#state33">33</a>-><a href="#state34">34</a>-><a href="#state35">35</a>
+    Predecessors: <a href="#state34">34</a>
+
+  <b>Kernel Items</b>
+    62 unar: OpenPar Double ClosePar unar .
+	-lookahead: { Pipe, BitAnd, Multiplies, Divides, Plus, Minus, Equal, NotEqual, 
+                Greater, GreaterEqual, Less, LessEqual, Or, And, Semicolon, 
+                ClosePar }
+
+  <b>Parser Actions</b>
+    Pipe           reduce using <a href="#prod62">rule 62</a> (unar)
+    BitAnd         reduce using <a href="#prod62">rule 62</a> (unar)
+    Multiplies     reduce using <a href="#prod62">rule 62</a> (unar)
+    Divides        reduce using <a href="#prod62">rule 62</a> (unar)
+    Plus           reduce using <a href="#prod62">rule 62</a> (unar)
+    Minus          reduce using <a href="#prod62">rule 62</a> (unar)
+    Equal          reduce using <a href="#prod62">rule 62</a> (unar)
+    NotEqual       reduce using <a href="#prod62">rule 62</a> (unar)
+    Greater        reduce using <a href="#prod62">rule 62</a> (unar)
+    GreaterEqual   reduce using <a href="#prod62">rule 62</a> (unar)
+    Less           reduce using <a href="#prod62">rule 62</a> (unar)
+    LessEqual      reduce using <a href="#prod62">rule 62</a> (unar)
+    Or             reduce using <a href="#prod62">rule 62</a> (unar)
+    And            reduce using <a href="#prod62">rule 62</a> (unar)
+    Semicolon      reduce using <a href="#prod62">rule 62</a> (unar)
+    ClosePar       reduce using <a href="#prod62">rule 62</a> (unar)
+
+
+
+<b><a name="state36">State</a> <a href="#state36">36</a></b>
+    Shortest prefix: Program BracketLeft factor
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state36">36</a>
+    Predecessors: <a href="#state12">12</a>, <a href="#state16">16</a>, <a href="#state20">20</a>, <a href="#state24">24</a>, <a href="#state26">26</a>, <a href="#state28">28</a>, <a href="#state30">30</a>, <a href="#state32">32</a>, <a href="#state34">34</a>, <a href="#state46">46</a>, <a href="#state48">48</a>, <a href="#state50">50</a>, <a href="#state52">52</a>, <a href="#state54">54</a>, <a href="#state56">56</a>, <a href="#state58">58</a>, 
+                  <a href="#state61">61</a>, <a href="#state64">64</a>, <a href="#state67">67</a>, <a href="#state69">69</a>, <a href="#state71">71</a>, <a href="#state73">73</a>, <a href="#state75">75</a>, <a href="#state78">78</a>, <a href="#state84">84</a>, <a href="#state86">86</a>, <a href="#state88">88</a>, <a href="#state92">92</a>, <a href="#state94">94</a>, <a href="#state101">101</a>, <a href="#state106">106</a>
+
+  <b>Kernel Items</b>
+    63 unar: factor .
+	-lookahead: { Pipe, BitAnd, Multiplies, Divides, Plus, Minus, Equal, NotEqual, 
+                Greater, GreaterEqual, Less, LessEqual, Or, And, Semicolon, 
+                ClosePar }
+
+  <b>Parser Actions</b>
+    Pipe           reduce using <a href="#prod63">rule 63</a> (unar)
+    BitAnd         reduce using <a href="#prod63">rule 63</a> (unar)
+    Multiplies     reduce using <a href="#prod63">rule 63</a> (unar)
+    Divides        reduce using <a href="#prod63">rule 63</a> (unar)
+    Plus           reduce using <a href="#prod63">rule 63</a> (unar)
+    Minus          reduce using <a href="#prod63">rule 63</a> (unar)
+    Equal          reduce using <a href="#prod63">rule 63</a> (unar)
+    NotEqual       reduce using <a href="#prod63">rule 63</a> (unar)
+    Greater        reduce using <a href="#prod63">rule 63</a> (unar)
+    GreaterEqual   reduce using <a href="#prod63">rule 63</a> (unar)
+    Less           reduce using <a href="#prod63">rule 63</a> (unar)
+    LessEqual      reduce using <a href="#prod63">rule 63</a> (unar)
+    Or             reduce using <a href="#prod63">rule 63</a> (unar)
+    And            reduce using <a href="#prod63">rule 63</a> (unar)
+    Semicolon      reduce using <a href="#prod63">rule 63</a> (unar)
+    ClosePar       reduce using <a href="#prod63">rule 63</a> (unar)
+
+
+
+<b><a name="state37">State</a> <a href="#state37">37</a></b>
+    Shortest prefix: Program BracketLeft IntNumber
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state37">37</a>
+    Predecessors: <a href="#state12">12</a>, <a href="#state16">16</a>, <a href="#state20">20</a>, <a href="#state24">24</a>, <a href="#state26">26</a>, <a href="#state28">28</a>, <a href="#state30">30</a>, <a href="#state32">32</a>, <a href="#state34">34</a>, <a href="#state46">46</a>, <a href="#state48">48</a>, <a href="#state50">50</a>, <a href="#state52">52</a>, <a href="#state54">54</a>, <a href="#state56">56</a>, <a href="#state58">58</a>, 
+                  <a href="#state61">61</a>, <a href="#state64">64</a>, <a href="#state67">67</a>, <a href="#state69">69</a>, <a href="#state71">71</a>, <a href="#state73">73</a>, <a href="#state75">75</a>, <a href="#state78">78</a>, <a href="#state84">84</a>, <a href="#state86">86</a>, <a href="#state88">88</a>, <a href="#state92">92</a>, <a href="#state94">94</a>, <a href="#state101">101</a>, <a href="#state106">106</a>
+
+  <b>Kernel Items</b>
+    65 factor: IntNumber .
+	-lookahead: { Pipe, BitAnd, Multiplies, Divides, Plus, Minus, Equal, NotEqual, 
+                Greater, GreaterEqual, Less, LessEqual, Or, And, Semicolon, 
+                ClosePar }
+
+  <b>Parser Actions</b>
+    Pipe           reduce using <a href="#prod65">rule 65</a> (factor)
+    BitAnd         reduce using <a href="#prod65">rule 65</a> (factor)
+    Multiplies     reduce using <a href="#prod65">rule 65</a> (factor)
+    Divides        reduce using <a href="#prod65">rule 65</a> (factor)
+    Plus           reduce using <a href="#prod65">rule 65</a> (factor)
+    Minus          reduce using <a href="#prod65">rule 65</a> (factor)
+    Equal          reduce using <a href="#prod65">rule 65</a> (factor)
+    NotEqual       reduce using <a href="#prod65">rule 65</a> (factor)
+    Greater        reduce using <a href="#prod65">rule 65</a> (factor)
+    GreaterEqual   reduce using <a href="#prod65">rule 65</a> (factor)
+    Less           reduce using <a href="#prod65">rule 65</a> (factor)
+    LessEqual      reduce using <a href="#prod65">rule 65</a> (factor)
+    Or             reduce using <a href="#prod65">rule 65</a> (factor)
+    And            reduce using <a href="#prod65">rule 65</a> (factor)
+    Semicolon      reduce using <a href="#prod65">rule 65</a> (factor)
+    ClosePar       reduce using <a href="#prod65">rule 65</a> (factor)
+
+
+
+<b><a name="state38">State</a> <a href="#state38">38</a></b>
+    Shortest prefix: Program BracketLeft RealNumber
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state38">38</a>
+    Predecessors: <a href="#state12">12</a>, <a href="#state16">16</a>, <a href="#state20">20</a>, <a href="#state24">24</a>, <a href="#state26">26</a>, <a href="#state28">28</a>, <a href="#state30">30</a>, <a href="#state32">32</a>, <a href="#state34">34</a>, <a href="#state46">46</a>, <a href="#state48">48</a>, <a href="#state50">50</a>, <a href="#state52">52</a>, <a href="#state54">54</a>, <a href="#state56">56</a>, <a href="#state58">58</a>, 
+                  <a href="#state61">61</a>, <a href="#state64">64</a>, <a href="#state67">67</a>, <a href="#state69">69</a>, <a href="#state71">71</a>, <a href="#state73">73</a>, <a href="#state75">75</a>, <a href="#state78">78</a>, <a href="#state84">84</a>, <a href="#state86">86</a>, <a href="#state88">88</a>, <a href="#state92">92</a>, <a href="#state94">94</a>, <a href="#state101">101</a>, <a href="#state106">106</a>
+
+  <b>Kernel Items</b>
+    66 factor: RealNumber .
+	-lookahead: { Pipe, BitAnd, Multiplies, Divides, Plus, Minus, Equal, NotEqual, 
+                Greater, GreaterEqual, Less, LessEqual, Or, And, Semicolon, 
+                ClosePar }
+
+  <b>Parser Actions</b>
+    Pipe           reduce using <a href="#prod66">rule 66</a> (factor)
+    BitAnd         reduce using <a href="#prod66">rule 66</a> (factor)
+    Multiplies     reduce using <a href="#prod66">rule 66</a> (factor)
+    Divides        reduce using <a href="#prod66">rule 66</a> (factor)
+    Plus           reduce using <a href="#prod66">rule 66</a> (factor)
+    Minus          reduce using <a href="#prod66">rule 66</a> (factor)
+    Equal          reduce using <a href="#prod66">rule 66</a> (factor)
+    NotEqual       reduce using <a href="#prod66">rule 66</a> (factor)
+    Greater        reduce using <a href="#prod66">rule 66</a> (factor)
+    GreaterEqual   reduce using <a href="#prod66">rule 66</a> (factor)
+    Less           reduce using <a href="#prod66">rule 66</a> (factor)
+    LessEqual      reduce using <a href="#prod66">rule 66</a> (factor)
+    Or             reduce using <a href="#prod66">rule 66</a> (factor)
+    And            reduce using <a href="#prod66">rule 66</a> (factor)
+    Semicolon      reduce using <a href="#prod66">rule 66</a> (factor)
+    ClosePar       reduce using <a href="#prod66">rule 66</a> (factor)
+
+
+
+<b><a name="state39">State</a> <a href="#state39">39</a></b>
+    Shortest prefix: Program BracketLeft Minus Ident
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state26">26</a>-><a href="#state39">39</a>
+    Predecessors: <a href="#state24">24</a>, <a href="#state26">26</a>, <a href="#state28">28</a>, <a href="#state30">30</a>, <a href="#state34">34</a>, <a href="#state46">46</a>, <a href="#state48">48</a>, <a href="#state50">50</a>, <a href="#state52">52</a>, <a href="#state54">54</a>, <a href="#state56">56</a>, <a href="#state58">58</a>, <a href="#state61">61</a>, <a href="#state64">64</a>, <a href="#state67">67</a>, <a href="#state69">69</a>, 
+                  <a href="#state71">71</a>, <a href="#state73">73</a>, <a href="#state75">75</a>, <a href="#state78">78</a>
+
+  <b>Kernel Items</b>
+    67 factor: Ident .
+	-lookahead: { Pipe, BitAnd, Multiplies, Divides, Plus, Minus, Equal, NotEqual, 
+                Greater, GreaterEqual, Less, LessEqual, Or, And, Semicolon, 
+                ClosePar }
+
+  <b>Parser Actions</b>
+    Pipe           reduce using <a href="#prod67">rule 67</a> (factor)
+    BitAnd         reduce using <a href="#prod67">rule 67</a> (factor)
+    Multiplies     reduce using <a href="#prod67">rule 67</a> (factor)
+    Divides        reduce using <a href="#prod67">rule 67</a> (factor)
+    Plus           reduce using <a href="#prod67">rule 67</a> (factor)
+    Minus          reduce using <a href="#prod67">rule 67</a> (factor)
+    Equal          reduce using <a href="#prod67">rule 67</a> (factor)
+    NotEqual       reduce using <a href="#prod67">rule 67</a> (factor)
+    Greater        reduce using <a href="#prod67">rule 67</a> (factor)
+    GreaterEqual   reduce using <a href="#prod67">rule 67</a> (factor)
+    Less           reduce using <a href="#prod67">rule 67</a> (factor)
+    LessEqual      reduce using <a href="#prod67">rule 67</a> (factor)
+    Or             reduce using <a href="#prod67">rule 67</a> (factor)
+    And            reduce using <a href="#prod67">rule 67</a> (factor)
+    Semicolon      reduce using <a href="#prod67">rule 67</a> (factor)
+    ClosePar       reduce using <a href="#prod67">rule 67</a> (factor)
+
+
+
+<b><a name="state40">State</a> <a href="#state40">40</a></b>
+    Shortest prefix: Program BracketLeft boolVar
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state40">40</a>
+    Predecessors: <a href="#state12">12</a>, <a href="#state16">16</a>, <a href="#state20">20</a>, <a href="#state24">24</a>, <a href="#state26">26</a>, <a href="#state28">28</a>, <a href="#state30">30</a>, <a href="#state32">32</a>, <a href="#state34">34</a>, <a href="#state46">46</a>, <a href="#state48">48</a>, <a href="#state50">50</a>, <a href="#state52">52</a>, <a href="#state54">54</a>, <a href="#state56">56</a>, <a href="#state58">58</a>, 
+                  <a href="#state61">61</a>, <a href="#state64">64</a>, <a href="#state67">67</a>, <a href="#state69">69</a>, <a href="#state71">71</a>, <a href="#state73">73</a>, <a href="#state75">75</a>, <a href="#state78">78</a>, <a href="#state84">84</a>, <a href="#state86">86</a>, <a href="#state88">88</a>, <a href="#state92">92</a>, <a href="#state94">94</a>, <a href="#state101">101</a>, <a href="#state106">106</a>
+
+  <b>Kernel Items</b>
+    68 factor: boolVar .
+	-lookahead: { Pipe, BitAnd, Multiplies, Divides, Plus, Minus, Equal, NotEqual, 
+                Greater, GreaterEqual, Less, LessEqual, Or, And, Semicolon, 
+                ClosePar }
+
+  <b>Parser Actions</b>
+    Pipe           reduce using <a href="#prod68">rule 68</a> (factor)
+    BitAnd         reduce using <a href="#prod68">rule 68</a> (factor)
+    Multiplies     reduce using <a href="#prod68">rule 68</a> (factor)
+    Divides        reduce using <a href="#prod68">rule 68</a> (factor)
+    Plus           reduce using <a href="#prod68">rule 68</a> (factor)
+    Minus          reduce using <a href="#prod68">rule 68</a> (factor)
+    Equal          reduce using <a href="#prod68">rule 68</a> (factor)
+    NotEqual       reduce using <a href="#prod68">rule 68</a> (factor)
+    Greater        reduce using <a href="#prod68">rule 68</a> (factor)
+    GreaterEqual   reduce using <a href="#prod68">rule 68</a> (factor)
+    Less           reduce using <a href="#prod68">rule 68</a> (factor)
+    LessEqual      reduce using <a href="#prod68">rule 68</a> (factor)
+    Or             reduce using <a href="#prod68">rule 68</a> (factor)
+    And            reduce using <a href="#prod68">rule 68</a> (factor)
+    Semicolon      reduce using <a href="#prod68">rule 68</a> (factor)
+    ClosePar       reduce using <a href="#prod68">rule 68</a> (factor)
+
+
+
+<b><a name="state41">State</a> <a href="#state41">41</a></b>
+    Shortest prefix: Program BracketLeft True
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state41">41</a>
+    Predecessors: <a href="#state12">12</a>, <a href="#state16">16</a>, <a href="#state20">20</a>, <a href="#state24">24</a>, <a href="#state26">26</a>, <a href="#state28">28</a>, <a href="#state30">30</a>, <a href="#state32">32</a>, <a href="#state34">34</a>, <a href="#state46">46</a>, <a href="#state48">48</a>, <a href="#state50">50</a>, <a href="#state52">52</a>, <a href="#state54">54</a>, <a href="#state56">56</a>, <a href="#state58">58</a>, 
+                  <a href="#state61">61</a>, <a href="#state64">64</a>, <a href="#state67">67</a>, <a href="#state69">69</a>, <a href="#state71">71</a>, <a href="#state73">73</a>, <a href="#state75">75</a>, <a href="#state78">78</a>, <a href="#state84">84</a>, <a href="#state86">86</a>, <a href="#state88">88</a>, <a href="#state92">92</a>, <a href="#state94">94</a>, <a href="#state101">101</a>, <a href="#state106">106</a>
+
+  <b>Kernel Items</b>
+    69 boolVar: True .
+	-lookahead: { Pipe, BitAnd, Multiplies, Divides, Plus, Minus, Equal, NotEqual, 
+                Greater, GreaterEqual, Less, LessEqual, Or, And, Semicolon, 
+                ClosePar }
+
+  <b>Parser Actions</b>
+    Pipe           reduce using <a href="#prod69">rule 69</a> (boolVar)
+    BitAnd         reduce using <a href="#prod69">rule 69</a> (boolVar)
+    Multiplies     reduce using <a href="#prod69">rule 69</a> (boolVar)
+    Divides        reduce using <a href="#prod69">rule 69</a> (boolVar)
+    Plus           reduce using <a href="#prod69">rule 69</a> (boolVar)
+    Minus          reduce using <a href="#prod69">rule 69</a> (boolVar)
+    Equal          reduce using <a href="#prod69">rule 69</a> (boolVar)
+    NotEqual       reduce using <a href="#prod69">rule 69</a> (boolVar)
+    Greater        reduce using <a href="#prod69">rule 69</a> (boolVar)
+    GreaterEqual   reduce using <a href="#prod69">rule 69</a> (boolVar)
+    Less           reduce using <a href="#prod69">rule 69</a> (boolVar)
+    LessEqual      reduce using <a href="#prod69">rule 69</a> (boolVar)
+    Or             reduce using <a href="#prod69">rule 69</a> (boolVar)
+    And            reduce using <a href="#prod69">rule 69</a> (boolVar)
+    Semicolon      reduce using <a href="#prod69">rule 69</a> (boolVar)
+    ClosePar       reduce using <a href="#prod69">rule 69</a> (boolVar)
+
+
+
+<b><a name="state42">State</a> <a href="#state42">42</a></b>
+    Shortest prefix: Program BracketLeft False
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state42">42</a>
+    Predecessors: <a href="#state12">12</a>, <a href="#state16">16</a>, <a href="#state20">20</a>, <a href="#state24">24</a>, <a href="#state26">26</a>, <a href="#state28">28</a>, <a href="#state30">30</a>, <a href="#state32">32</a>, <a href="#state34">34</a>, <a href="#state46">46</a>, <a href="#state48">48</a>, <a href="#state50">50</a>, <a href="#state52">52</a>, <a href="#state54">54</a>, <a href="#state56">56</a>, <a href="#state58">58</a>, 
+                  <a href="#state61">61</a>, <a href="#state64">64</a>, <a href="#state67">67</a>, <a href="#state69">69</a>, <a href="#state71">71</a>, <a href="#state73">73</a>, <a href="#state75">75</a>, <a href="#state78">78</a>, <a href="#state84">84</a>, <a href="#state86">86</a>, <a href="#state88">88</a>, <a href="#state92">92</a>, <a href="#state94">94</a>, <a href="#state101">101</a>, <a href="#state106">106</a>
+
+  <b>Kernel Items</b>
+    70 boolVar: False .
+	-lookahead: { Pipe, BitAnd, Multiplies, Divides, Plus, Minus, Equal, NotEqual, 
+                Greater, GreaterEqual, Less, LessEqual, Or, And, Semicolon, 
+                ClosePar }
+
+  <b>Parser Actions</b>
+    Pipe           reduce using <a href="#prod70">rule 70</a> (boolVar)
+    BitAnd         reduce using <a href="#prod70">rule 70</a> (boolVar)
+    Multiplies     reduce using <a href="#prod70">rule 70</a> (boolVar)
+    Divides        reduce using <a href="#prod70">rule 70</a> (boolVar)
+    Plus           reduce using <a href="#prod70">rule 70</a> (boolVar)
+    Minus          reduce using <a href="#prod70">rule 70</a> (boolVar)
+    Equal          reduce using <a href="#prod70">rule 70</a> (boolVar)
+    NotEqual       reduce using <a href="#prod70">rule 70</a> (boolVar)
+    Greater        reduce using <a href="#prod70">rule 70</a> (boolVar)
+    GreaterEqual   reduce using <a href="#prod70">rule 70</a> (boolVar)
+    Less           reduce using <a href="#prod70">rule 70</a> (boolVar)
+    LessEqual      reduce using <a href="#prod70">rule 70</a> (boolVar)
+    Or             reduce using <a href="#prod70">rule 70</a> (boolVar)
+    And            reduce using <a href="#prod70">rule 70</a> (boolVar)
+    Semicolon      reduce using <a href="#prod70">rule 70</a> (boolVar)
+    ClosePar       reduce using <a href="#prod70">rule 70</a> (boolVar)
+
+
+
+<b><a name="state43">State</a> <a href="#state43">43</a></b>
+    Shortest prefix: Program BracketLeft Minus OpenPar exp
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state26">26</a>-><a href="#state32">32</a>-><a href="#state43">43</a>
+    Predecessors: <a href="#state32">32</a>
+
+  <b>Kernel Items</b>
+    64 factor: OpenPar exp . ClosePar
+
+  <b>Parser Actions</b>
+    ClosePar       shift, and go to state <a href="#state44">44</a>
+
+
+
+<b><a name="state44">State</a> <a href="#state44">44</a></b>
+    Shortest prefix: Program BracketLeft Minus OpenPar exp ClosePar
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state26">26</a>-><a href="#state32">32</a>-><a href="#state43">43</a>-><a href="#state44">44</a>
+    Predecessors: <a href="#state43">43</a>
+
+  <b>Kernel Items</b>
+    64 factor: OpenPar exp ClosePar .
+	-lookahead: { Pipe, BitAnd, Multiplies, Divides, Plus, Minus, Equal, NotEqual, 
+                Greater, GreaterEqual, Less, LessEqual, Or, And, Semicolon, 
+                ClosePar }
+
+  <b>Parser Actions</b>
+    Pipe           reduce using <a href="#prod64">rule 64</a> (factor)
+    BitAnd         reduce using <a href="#prod64">rule 64</a> (factor)
+    Multiplies     reduce using <a href="#prod64">rule 64</a> (factor)
+    Divides        reduce using <a href="#prod64">rule 64</a> (factor)
+    Plus           reduce using <a href="#prod64">rule 64</a> (factor)
+    Minus          reduce using <a href="#prod64">rule 64</a> (factor)
+    Equal          reduce using <a href="#prod64">rule 64</a> (factor)
+    NotEqual       reduce using <a href="#prod64">rule 64</a> (factor)
+    Greater        reduce using <a href="#prod64">rule 64</a> (factor)
+    GreaterEqual   reduce using <a href="#prod64">rule 64</a> (factor)
+    Less           reduce using <a href="#prod64">rule 64</a> (factor)
+    LessEqual      reduce using <a href="#prod64">rule 64</a> (factor)
+    Or             reduce using <a href="#prod64">rule 64</a> (factor)
+    And            reduce using <a href="#prod64">rule 64</a> (factor)
+    Semicolon      reduce using <a href="#prod64">rule 64</a> (factor)
+    ClosePar       reduce using <a href="#prod64">rule 64</a> (factor)
+
+
+
+<b><a name="state45">State</a> <a href="#state45">45</a></b>
+    Shortest prefix: Program BracketLeft Ident
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state45">45</a>
+    Predecessors: <a href="#state12">12</a>, <a href="#state16">16</a>, <a href="#state20">20</a>, <a href="#state32">32</a>, <a href="#state84">84</a>, <a href="#state86">86</a>, <a href="#state88">88</a>, <a href="#state92">92</a>, <a href="#state94">94</a>, <a href="#state101">101</a>, <a href="#state106">106</a>
+
+  <b>Kernel Items</b>
+    37 exp: Ident . Assign logic
+    67 factor: Ident .
+	-lookahead: { Pipe, BitAnd, Multiplies, Divides, Plus, Minus, Equal, NotEqual, 
+                Greater, GreaterEqual, Less, LessEqual, Or, And, Semicolon, 
+                ClosePar }
+
+  <b>Parser Actions</b>
+    Assign         shift, and go to state <a href="#state46">46</a>
+    Pipe           reduce using <a href="#prod67">rule 67</a> (factor)
+    BitAnd         reduce using <a href="#prod67">rule 67</a> (factor)
+    Multiplies     reduce using <a href="#prod67">rule 67</a> (factor)
+    Divides        reduce using <a href="#prod67">rule 67</a> (factor)
+    Plus           reduce using <a href="#prod67">rule 67</a> (factor)
+    Minus          reduce using <a href="#prod67">rule 67</a> (factor)
+    Equal          reduce using <a href="#prod67">rule 67</a> (factor)
+    NotEqual       reduce using <a href="#prod67">rule 67</a> (factor)
+    Greater        reduce using <a href="#prod67">rule 67</a> (factor)
+    GreaterEqual   reduce using <a href="#prod67">rule 67</a> (factor)
+    Less           reduce using <a href="#prod67">rule 67</a> (factor)
+    LessEqual      reduce using <a href="#prod67">rule 67</a> (factor)
+    Or             reduce using <a href="#prod67">rule 67</a> (factor)
+    And            reduce using <a href="#prod67">rule 67</a> (factor)
+    Semicolon      reduce using <a href="#prod67">rule 67</a> (factor)
+    ClosePar       reduce using <a href="#prod67">rule 67</a> (factor)
+
+
+
+<b><a name="state46">State</a> <a href="#state46">46</a></b>
+    Shortest prefix: Program BracketLeft Ident Assign
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state45">45</a>-><a href="#state46">46</a>
+    Predecessors: <a href="#state45">45</a>
+
+  <b>Kernel Items</b>
+    37 exp: Ident Assign . logic
+
+  <b>Parser Actions</b>
+    Minus          shift, and go to state <a href="#state26">26</a>
+    Tilde          shift, and go to state <a href="#state28">28</a>
+    Not            shift, and go to state <a href="#state30">30</a>
+    OpenPar        shift, and go to state <a href="#state32">32</a>
+    IntNumber      shift, and go to state <a href="#state37">37</a>
+    RealNumber     shift, and go to state <a href="#state38">38</a>
+    Ident          shift, and go to state <a href="#state39">39</a>
+    True           shift, and go to state <a href="#state41">41</a>
+    False          shift, and go to state <a href="#state42">42</a>
+
+  <b>Transitions</b>
+    logic          go to state <a href="#state47">47</a>
+    rel            go to state <a href="#state80">80</a>
+    adding         go to state <a href="#state77">77</a>
+    term           go to state <a href="#state66">66</a>
+    bitexp         go to state <a href="#state63">63</a>
+    unar           go to state <a href="#state60">60</a>
+    factor         go to state <a href="#state36">36</a>
+    boolVar        go to state <a href="#state40">40</a>
+
+
+<b><a name="state47">State</a> <a href="#state47">47</a></b>
+    Shortest prefix: Program BracketLeft Ident Assign logic
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state45">45</a>-><a href="#state46">46</a>-><a href="#state47">47</a>
+    Predecessors: <a href="#state46">46</a>
+
+  <b>Kernel Items</b>
+    37 exp: Ident Assign logic .
+	-lookahead: { Semicolon, ClosePar }
+    39 logic: logic . Or rel
+    40 logic: logic . And rel
+
+  <b>Parser Actions</b>
+    Or             shift, and go to state <a href="#state48">48</a>
+    And            shift, and go to state <a href="#state78">78</a>
+    Semicolon      reduce using <a href="#prod37">rule 37</a> (exp)
+    ClosePar       reduce using <a href="#prod37">rule 37</a> (exp)
+
+
+
+<b><a name="state48">State</a> <a href="#state48">48</a></b>
+    Shortest prefix: Program BracketLeft logic Or
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state81">81</a>-><a href="#state48">48</a>
+    Predecessors: <a href="#state47">47</a>, <a href="#state81">81</a>
+
+  <b>Kernel Items</b>
+    39 logic: logic Or . rel
+
+  <b>Parser Actions</b>
+    Minus          shift, and go to state <a href="#state26">26</a>
+    Tilde          shift, and go to state <a href="#state28">28</a>
+    Not            shift, and go to state <a href="#state30">30</a>
+    OpenPar        shift, and go to state <a href="#state32">32</a>
+    IntNumber      shift, and go to state <a href="#state37">37</a>
+    RealNumber     shift, and go to state <a href="#state38">38</a>
+    Ident          shift, and go to state <a href="#state39">39</a>
+    True           shift, and go to state <a href="#state41">41</a>
+    False          shift, and go to state <a href="#state42">42</a>
+
+  <b>Transitions</b>
+    rel            go to state <a href="#state49">49</a>
+    adding         go to state <a href="#state77">77</a>
+    term           go to state <a href="#state66">66</a>
+    bitexp         go to state <a href="#state63">63</a>
+    unar           go to state <a href="#state60">60</a>
+    factor         go to state <a href="#state36">36</a>
+    boolVar        go to state <a href="#state40">40</a>
+
+
+<b><a name="state49">State</a> <a href="#state49">49</a></b>
+    Shortest prefix: Program BracketLeft logic Or rel
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state81">81</a>-><a href="#state48">48</a>-><a href="#state49">49</a>
+    Predecessors: <a href="#state48">48</a>
+
+  <b>Kernel Items</b>
+    39 logic: logic Or rel .
+	-lookahead: { Or, And, Semicolon, ClosePar }
+    42 rel: rel . Equal adding
+    43 rel: rel . NotEqual adding
+    44 rel: rel . Greater adding
+    45 rel: rel . GreaterEqual adding
+    46 rel: rel . Less adding
+    47 rel: rel . LessEqual adding
+
+  <b>Parser Actions</b>
+    Equal          shift, and go to state <a href="#state50">50</a>
+    NotEqual       shift, and go to state <a href="#state67">67</a>
+    Greater        shift, and go to state <a href="#state69">69</a>
+    GreaterEqual   shift, and go to state <a href="#state71">71</a>
+    Less           shift, and go to state <a href="#state73">73</a>
+    LessEqual      shift, and go to state <a href="#state75">75</a>
+    Or             reduce using <a href="#prod39">rule 39</a> (logic)
+    And            reduce using <a href="#prod39">rule 39</a> (logic)
+    Semicolon      reduce using <a href="#prod39">rule 39</a> (logic)
+    ClosePar       reduce using <a href="#prod39">rule 39</a> (logic)
+
+
+
+<b><a name="state50">State</a> <a href="#state50">50</a></b>
+    Shortest prefix: Program BracketLeft rel Equal
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state80">80</a>-><a href="#state50">50</a>
+    Predecessors: <a href="#state49">49</a>, <a href="#state79">79</a>, <a href="#state80">80</a>
+
+  <b>Kernel Items</b>
+    42 rel: rel Equal . adding
+
+  <b>Parser Actions</b>
+    Minus          shift, and go to state <a href="#state26">26</a>
+    Tilde          shift, and go to state <a href="#state28">28</a>
+    Not            shift, and go to state <a href="#state30">30</a>
+    OpenPar        shift, and go to state <a href="#state32">32</a>
+    IntNumber      shift, and go to state <a href="#state37">37</a>
+    RealNumber     shift, and go to state <a href="#state38">38</a>
+    Ident          shift, and go to state <a href="#state39">39</a>
+    True           shift, and go to state <a href="#state41">41</a>
+    False          shift, and go to state <a href="#state42">42</a>
+
+  <b>Transitions</b>
+    adding         go to state <a href="#state51">51</a>
+    term           go to state <a href="#state66">66</a>
+    bitexp         go to state <a href="#state63">63</a>
+    unar           go to state <a href="#state60">60</a>
+    factor         go to state <a href="#state36">36</a>
+    boolVar        go to state <a href="#state40">40</a>
+
+
+<b><a name="state51">State</a> <a href="#state51">51</a></b>
+    Shortest prefix: Program BracketLeft rel Equal adding
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state80">80</a>-><a href="#state50">50</a>-><a href="#state51">51</a>
+    Predecessors: <a href="#state50">50</a>
+
+  <b>Kernel Items</b>
+    42 rel: rel Equal adding .
+	-lookahead: { Equal, NotEqual, Greater, GreaterEqual, Less, LessEqual, Or, 
+                And, Semicolon, ClosePar }
+    49 adding: adding . Plus term
+    50 adding: adding . Minus term
+
+  <b>Parser Actions</b>
+    Plus           shift, and go to state <a href="#state52">52</a>
+    Minus          shift, and go to state <a href="#state64">64</a>
+    Equal          reduce using <a href="#prod42">rule 42</a> (rel)
+    NotEqual       reduce using <a href="#prod42">rule 42</a> (rel)
+    Greater        reduce using <a href="#prod42">rule 42</a> (rel)
+    GreaterEqual   reduce using <a href="#prod42">rule 42</a> (rel)
+    Less           reduce using <a href="#prod42">rule 42</a> (rel)
+    LessEqual      reduce using <a href="#prod42">rule 42</a> (rel)
+    Or             reduce using <a href="#prod42">rule 42</a> (rel)
+    And            reduce using <a href="#prod42">rule 42</a> (rel)
+    Semicolon      reduce using <a href="#prod42">rule 42</a> (rel)
+    ClosePar       reduce using <a href="#prod42">rule 42</a> (rel)
+
+
+
+<b><a name="state52">State</a> <a href="#state52">52</a></b>
+    Shortest prefix: Program BracketLeft adding Plus
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state77">77</a>-><a href="#state52">52</a>
+    Predecessors: <a href="#state51">51</a>, <a href="#state68">68</a>, <a href="#state70">70</a>, <a href="#state72">72</a>, <a href="#state74">74</a>, <a href="#state76">76</a>, <a href="#state77">77</a>
+
+  <b>Kernel Items</b>
+    49 adding: adding Plus . term
+
+  <b>Parser Actions</b>
+    Minus          shift, and go to state <a href="#state26">26</a>
+    Tilde          shift, and go to state <a href="#state28">28</a>
+    Not            shift, and go to state <a href="#state30">30</a>
+    OpenPar        shift, and go to state <a href="#state32">32</a>
+    IntNumber      shift, and go to state <a href="#state37">37</a>
+    RealNumber     shift, and go to state <a href="#state38">38</a>
+    Ident          shift, and go to state <a href="#state39">39</a>
+    True           shift, and go to state <a href="#state41">41</a>
+    False          shift, and go to state <a href="#state42">42</a>
+
+  <b>Transitions</b>
+    term           go to state <a href="#state53">53</a>
+    bitexp         go to state <a href="#state63">63</a>
+    unar           go to state <a href="#state60">60</a>
+    factor         go to state <a href="#state36">36</a>
+    boolVar        go to state <a href="#state40">40</a>
+
+
+<b><a name="state53">State</a> <a href="#state53">53</a></b>
+    Shortest prefix: Program BracketLeft adding Plus term
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state77">77</a>-><a href="#state52">52</a>-><a href="#state53">53</a>
+    Predecessors: <a href="#state52">52</a>
+
+  <b>Kernel Items</b>
+    49 adding: adding Plus term .
+	-lookahead: { Plus, Minus, Equal, NotEqual, Greater, GreaterEqual, Less, 
+                LessEqual, Or, And, Semicolon, ClosePar }
+    52 term: term . Multiplies bitexp
+    53 term: term . Divides bitexp
+
+  <b>Parser Actions</b>
+    Multiplies     shift, and go to state <a href="#state54">54</a>
+    Divides        shift, and go to state <a href="#state61">61</a>
+    Plus           reduce using <a href="#prod49">rule 49</a> (adding)
+    Minus          reduce using <a href="#prod49">rule 49</a> (adding)
+    Equal          reduce using <a href="#prod49">rule 49</a> (adding)
+    NotEqual       reduce using <a href="#prod49">rule 49</a> (adding)
+    Greater        reduce using <a href="#prod49">rule 49</a> (adding)
+    GreaterEqual   reduce using <a href="#prod49">rule 49</a> (adding)
+    Less           reduce using <a href="#prod49">rule 49</a> (adding)
+    LessEqual      reduce using <a href="#prod49">rule 49</a> (adding)
+    Or             reduce using <a href="#prod49">rule 49</a> (adding)
+    And            reduce using <a href="#prod49">rule 49</a> (adding)
+    Semicolon      reduce using <a href="#prod49">rule 49</a> (adding)
+    ClosePar       reduce using <a href="#prod49">rule 49</a> (adding)
+
+
+
+<b><a name="state54">State</a> <a href="#state54">54</a></b>
+    Shortest prefix: Program BracketLeft term Multiplies
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state66">66</a>-><a href="#state54">54</a>
+    Predecessors: <a href="#state53">53</a>, <a href="#state65">65</a>, <a href="#state66">66</a>
+
+  <b>Kernel Items</b>
+    52 term: term Multiplies . bitexp
+
+  <b>Parser Actions</b>
+    Minus          shift, and go to state <a href="#state26">26</a>
+    Tilde          shift, and go to state <a href="#state28">28</a>
+    Not            shift, and go to state <a href="#state30">30</a>
+    OpenPar        shift, and go to state <a href="#state32">32</a>
+    IntNumber      shift, and go to state <a href="#state37">37</a>
+    RealNumber     shift, and go to state <a href="#state38">38</a>
+    Ident          shift, and go to state <a href="#state39">39</a>
+    True           shift, and go to state <a href="#state41">41</a>
+    False          shift, and go to state <a href="#state42">42</a>
+
+  <b>Transitions</b>
+    bitexp         go to state <a href="#state55">55</a>
+    unar           go to state <a href="#state60">60</a>
+    factor         go to state <a href="#state36">36</a>
+    boolVar        go to state <a href="#state40">40</a>
+
+
+<b><a name="state55">State</a> <a href="#state55">55</a></b>
+    Shortest prefix: Program BracketLeft term Multiplies bitexp
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state66">66</a>-><a href="#state54">54</a>-><a href="#state55">55</a>
+    Predecessors: <a href="#state54">54</a>
+
+  <b>Kernel Items</b>
+    52 term: term Multiplies bitexp .
+	-lookahead: { Multiplies, Divides, Plus, Minus, Equal, NotEqual, Greater, 
+                GreaterEqual, Less, LessEqual, Or, And, Semicolon, ClosePar }
+    55 bitexp: bitexp . Pipe unar
+    56 bitexp: bitexp . BitAnd unar
+
+  <b>Parser Actions</b>
+    Pipe           shift, and go to state <a href="#state56">56</a>
+    BitAnd         shift, and go to state <a href="#state58">58</a>
+    Multiplies     reduce using <a href="#prod52">rule 52</a> (term)
+    Divides        reduce using <a href="#prod52">rule 52</a> (term)
+    Plus           reduce using <a href="#prod52">rule 52</a> (term)
+    Minus          reduce using <a href="#prod52">rule 52</a> (term)
+    Equal          reduce using <a href="#prod52">rule 52</a> (term)
+    NotEqual       reduce using <a href="#prod52">rule 52</a> (term)
+    Greater        reduce using <a href="#prod52">rule 52</a> (term)
+    GreaterEqual   reduce using <a href="#prod52">rule 52</a> (term)
+    Less           reduce using <a href="#prod52">rule 52</a> (term)
+    LessEqual      reduce using <a href="#prod52">rule 52</a> (term)
+    Or             reduce using <a href="#prod52">rule 52</a> (term)
+    And            reduce using <a href="#prod52">rule 52</a> (term)
+    Semicolon      reduce using <a href="#prod52">rule 52</a> (term)
+    ClosePar       reduce using <a href="#prod52">rule 52</a> (term)
+
+
+
+<b><a name="state56">State</a> <a href="#state56">56</a></b>
+    Shortest prefix: Program BracketLeft bitexp Pipe
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state63">63</a>-><a href="#state56">56</a>
+    Predecessors: <a href="#state55">55</a>, <a href="#state62">62</a>, <a href="#state63">63</a>
+
+  <b>Kernel Items</b>
+    55 bitexp: bitexp Pipe . unar
+
+  <b>Parser Actions</b>
+    Minus          shift, and go to state <a href="#state26">26</a>
+    Tilde          shift, and go to state <a href="#state28">28</a>
+    Not            shift, and go to state <a href="#state30">30</a>
+    OpenPar        shift, and go to state <a href="#state32">32</a>
+    IntNumber      shift, and go to state <a href="#state37">37</a>
+    RealNumber     shift, and go to state <a href="#state38">38</a>
+    Ident          shift, and go to state <a href="#state39">39</a>
+    True           shift, and go to state <a href="#state41">41</a>
+    False          shift, and go to state <a href="#state42">42</a>
+
+  <b>Transitions</b>
+    unar           go to state <a href="#state57">57</a>
+    factor         go to state <a href="#state36">36</a>
+    boolVar        go to state <a href="#state40">40</a>
+
+
+<b><a name="state57">State</a> <a href="#state57">57</a></b>
+    Shortest prefix: Program BracketLeft bitexp Pipe unar
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state63">63</a>-><a href="#state56">56</a>-><a href="#state57">57</a>
+    Predecessors: <a href="#state56">56</a>
+
+  <b>Kernel Items</b>
+    55 bitexp: bitexp Pipe unar .
+	-lookahead: { Pipe, BitAnd, Multiplies, Divides, Plus, Minus, Equal, NotEqual, 
+                Greater, GreaterEqual, Less, LessEqual, Or, And, Semicolon, 
+                ClosePar }
+
+  <b>Parser Actions</b>
+    Pipe           reduce using <a href="#prod55">rule 55</a> (bitexp)
+    BitAnd         reduce using <a href="#prod55">rule 55</a> (bitexp)
+    Multiplies     reduce using <a href="#prod55">rule 55</a> (bitexp)
+    Divides        reduce using <a href="#prod55">rule 55</a> (bitexp)
+    Plus           reduce using <a href="#prod55">rule 55</a> (bitexp)
+    Minus          reduce using <a href="#prod55">rule 55</a> (bitexp)
+    Equal          reduce using <a href="#prod55">rule 55</a> (bitexp)
+    NotEqual       reduce using <a href="#prod55">rule 55</a> (bitexp)
+    Greater        reduce using <a href="#prod55">rule 55</a> (bitexp)
+    GreaterEqual   reduce using <a href="#prod55">rule 55</a> (bitexp)
+    Less           reduce using <a href="#prod55">rule 55</a> (bitexp)
+    LessEqual      reduce using <a href="#prod55">rule 55</a> (bitexp)
+    Or             reduce using <a href="#prod55">rule 55</a> (bitexp)
+    And            reduce using <a href="#prod55">rule 55</a> (bitexp)
+    Semicolon      reduce using <a href="#prod55">rule 55</a> (bitexp)
+    ClosePar       reduce using <a href="#prod55">rule 55</a> (bitexp)
+
+
+
+<b><a name="state58">State</a> <a href="#state58">58</a></b>
+    Shortest prefix: Program BracketLeft bitexp BitAnd
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state63">63</a>-><a href="#state58">58</a>
+    Predecessors: <a href="#state55">55</a>, <a href="#state62">62</a>, <a href="#state63">63</a>
+
+  <b>Kernel Items</b>
+    56 bitexp: bitexp BitAnd . unar
+
+  <b>Parser Actions</b>
+    Minus          shift, and go to state <a href="#state26">26</a>
+    Tilde          shift, and go to state <a href="#state28">28</a>
+    Not            shift, and go to state <a href="#state30">30</a>
+    OpenPar        shift, and go to state <a href="#state32">32</a>
+    IntNumber      shift, and go to state <a href="#state37">37</a>
+    RealNumber     shift, and go to state <a href="#state38">38</a>
+    Ident          shift, and go to state <a href="#state39">39</a>
+    True           shift, and go to state <a href="#state41">41</a>
+    False          shift, and go to state <a href="#state42">42</a>
+
+  <b>Transitions</b>
+    unar           go to state <a href="#state59">59</a>
+    factor         go to state <a href="#state36">36</a>
+    boolVar        go to state <a href="#state40">40</a>
+
+
+<b><a name="state59">State</a> <a href="#state59">59</a></b>
+    Shortest prefix: Program BracketLeft bitexp BitAnd unar
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state63">63</a>-><a href="#state58">58</a>-><a href="#state59">59</a>
+    Predecessors: <a href="#state58">58</a>
+
+  <b>Kernel Items</b>
+    56 bitexp: bitexp BitAnd unar .
+	-lookahead: { Pipe, BitAnd, Multiplies, Divides, Plus, Minus, Equal, NotEqual, 
+                Greater, GreaterEqual, Less, LessEqual, Or, And, Semicolon, 
+                ClosePar }
+
+  <b>Parser Actions</b>
+    Pipe           reduce using <a href="#prod56">rule 56</a> (bitexp)
+    BitAnd         reduce using <a href="#prod56">rule 56</a> (bitexp)
+    Multiplies     reduce using <a href="#prod56">rule 56</a> (bitexp)
+    Divides        reduce using <a href="#prod56">rule 56</a> (bitexp)
+    Plus           reduce using <a href="#prod56">rule 56</a> (bitexp)
+    Minus          reduce using <a href="#prod56">rule 56</a> (bitexp)
+    Equal          reduce using <a href="#prod56">rule 56</a> (bitexp)
+    NotEqual       reduce using <a href="#prod56">rule 56</a> (bitexp)
+    Greater        reduce using <a href="#prod56">rule 56</a> (bitexp)
+    GreaterEqual   reduce using <a href="#prod56">rule 56</a> (bitexp)
+    Less           reduce using <a href="#prod56">rule 56</a> (bitexp)
+    LessEqual      reduce using <a href="#prod56">rule 56</a> (bitexp)
+    Or             reduce using <a href="#prod56">rule 56</a> (bitexp)
+    And            reduce using <a href="#prod56">rule 56</a> (bitexp)
+    Semicolon      reduce using <a href="#prod56">rule 56</a> (bitexp)
+    ClosePar       reduce using <a href="#prod56">rule 56</a> (bitexp)
+
+
+
+<b><a name="state60">State</a> <a href="#state60">60</a></b>
+    Shortest prefix: Program BracketLeft unar
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state60">60</a>
+    Predecessors: <a href="#state12">12</a>, <a href="#state16">16</a>, <a href="#state20">20</a>, <a href="#state32">32</a>, <a href="#state46">46</a>, <a href="#state48">48</a>, <a href="#state50">50</a>, <a href="#state52">52</a>, <a href="#state54">54</a>, <a href="#state61">61</a>, <a href="#state64">64</a>, <a href="#state67">67</a>, <a href="#state69">69</a>, <a href="#state71">71</a>, <a href="#state73">73</a>, <a href="#state75">75</a>, 
+                  <a href="#state78">78</a>, <a href="#state84">84</a>, <a href="#state86">86</a>, <a href="#state88">88</a>, <a href="#state92">92</a>, <a href="#state94">94</a>, <a href="#state101">101</a>, <a href="#state106">106</a>
+
+  <b>Kernel Items</b>
+    57 bitexp: unar .
+	-lookahead: { Pipe, BitAnd, Multiplies, Divides, Plus, Minus, Equal, NotEqual, 
+                Greater, GreaterEqual, Less, LessEqual, Or, And, Semicolon, 
+                ClosePar }
+
+  <b>Parser Actions</b>
+    Pipe           reduce using <a href="#prod57">rule 57</a> (bitexp)
+    BitAnd         reduce using <a href="#prod57">rule 57</a> (bitexp)
+    Multiplies     reduce using <a href="#prod57">rule 57</a> (bitexp)
+    Divides        reduce using <a href="#prod57">rule 57</a> (bitexp)
+    Plus           reduce using <a href="#prod57">rule 57</a> (bitexp)
+    Minus          reduce using <a href="#prod57">rule 57</a> (bitexp)
+    Equal          reduce using <a href="#prod57">rule 57</a> (bitexp)
+    NotEqual       reduce using <a href="#prod57">rule 57</a> (bitexp)
+    Greater        reduce using <a href="#prod57">rule 57</a> (bitexp)
+    GreaterEqual   reduce using <a href="#prod57">rule 57</a> (bitexp)
+    Less           reduce using <a href="#prod57">rule 57</a> (bitexp)
+    LessEqual      reduce using <a href="#prod57">rule 57</a> (bitexp)
+    Or             reduce using <a href="#prod57">rule 57</a> (bitexp)
+    And            reduce using <a href="#prod57">rule 57</a> (bitexp)
+    Semicolon      reduce using <a href="#prod57">rule 57</a> (bitexp)
+    ClosePar       reduce using <a href="#prod57">rule 57</a> (bitexp)
+
+
+
+<b><a name="state61">State</a> <a href="#state61">61</a></b>
+    Shortest prefix: Program BracketLeft term Divides
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state66">66</a>-><a href="#state61">61</a>
+    Predecessors: <a href="#state53">53</a>, <a href="#state65">65</a>, <a href="#state66">66</a>
+
+  <b>Kernel Items</b>
+    53 term: term Divides . bitexp
+
+  <b>Parser Actions</b>
+    Minus          shift, and go to state <a href="#state26">26</a>
+    Tilde          shift, and go to state <a href="#state28">28</a>
+    Not            shift, and go to state <a href="#state30">30</a>
+    OpenPar        shift, and go to state <a href="#state32">32</a>
+    IntNumber      shift, and go to state <a href="#state37">37</a>
+    RealNumber     shift, and go to state <a href="#state38">38</a>
+    Ident          shift, and go to state <a href="#state39">39</a>
+    True           shift, and go to state <a href="#state41">41</a>
+    False          shift, and go to state <a href="#state42">42</a>
+
+  <b>Transitions</b>
+    bitexp         go to state <a href="#state62">62</a>
+    unar           go to state <a href="#state60">60</a>
+    factor         go to state <a href="#state36">36</a>
+    boolVar        go to state <a href="#state40">40</a>
+
+
+<b><a name="state62">State</a> <a href="#state62">62</a></b>
+    Shortest prefix: Program BracketLeft term Divides bitexp
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state66">66</a>-><a href="#state61">61</a>-><a href="#state62">62</a>
+    Predecessors: <a href="#state61">61</a>
+
+  <b>Kernel Items</b>
+    53 term: term Divides bitexp .
+	-lookahead: { Multiplies, Divides, Plus, Minus, Equal, NotEqual, Greater, 
+                GreaterEqual, Less, LessEqual, Or, And, Semicolon, ClosePar }
+    55 bitexp: bitexp . Pipe unar
+    56 bitexp: bitexp . BitAnd unar
+
+  <b>Parser Actions</b>
+    Pipe           shift, and go to state <a href="#state56">56</a>
+    BitAnd         shift, and go to state <a href="#state58">58</a>
+    Multiplies     reduce using <a href="#prod53">rule 53</a> (term)
+    Divides        reduce using <a href="#prod53">rule 53</a> (term)
+    Plus           reduce using <a href="#prod53">rule 53</a> (term)
+    Minus          reduce using <a href="#prod53">rule 53</a> (term)
+    Equal          reduce using <a href="#prod53">rule 53</a> (term)
+    NotEqual       reduce using <a href="#prod53">rule 53</a> (term)
+    Greater        reduce using <a href="#prod53">rule 53</a> (term)
+    GreaterEqual   reduce using <a href="#prod53">rule 53</a> (term)
+    Less           reduce using <a href="#prod53">rule 53</a> (term)
+    LessEqual      reduce using <a href="#prod53">rule 53</a> (term)
+    Or             reduce using <a href="#prod53">rule 53</a> (term)
+    And            reduce using <a href="#prod53">rule 53</a> (term)
+    Semicolon      reduce using <a href="#prod53">rule 53</a> (term)
+    ClosePar       reduce using <a href="#prod53">rule 53</a> (term)
+
+
+
+<b><a name="state63">State</a> <a href="#state63">63</a></b>
+    Shortest prefix: Program BracketLeft bitexp
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state63">63</a>
+    Predecessors: <a href="#state12">12</a>, <a href="#state16">16</a>, <a href="#state20">20</a>, <a href="#state32">32</a>, <a href="#state46">46</a>, <a href="#state48">48</a>, <a href="#state50">50</a>, <a href="#state52">52</a>, <a href="#state64">64</a>, <a href="#state67">67</a>, <a href="#state69">69</a>, <a href="#state71">71</a>, <a href="#state73">73</a>, <a href="#state75">75</a>, <a href="#state78">78</a>, <a href="#state84">84</a>, 
+                  <a href="#state86">86</a>, <a href="#state88">88</a>, <a href="#state92">92</a>, <a href="#state94">94</a>, <a href="#state101">101</a>, <a href="#state106">106</a>
+
+  <b>Kernel Items</b>
+    54 term: bitexp .
+	-lookahead: { Multiplies, Divides, Plus, Minus, Equal, NotEqual, Greater, 
+                GreaterEqual, Less, LessEqual, Or, And, Semicolon, ClosePar }
+    55 bitexp: bitexp . Pipe unar
+    56 bitexp: bitexp . BitAnd unar
+
+  <b>Parser Actions</b>
+    Pipe           shift, and go to state <a href="#state56">56</a>
+    BitAnd         shift, and go to state <a href="#state58">58</a>
+    Multiplies     reduce using <a href="#prod54">rule 54</a> (term)
+    Divides        reduce using <a href="#prod54">rule 54</a> (term)
+    Plus           reduce using <a href="#prod54">rule 54</a> (term)
+    Minus          reduce using <a href="#prod54">rule 54</a> (term)
+    Equal          reduce using <a href="#prod54">rule 54</a> (term)
+    NotEqual       reduce using <a href="#prod54">rule 54</a> (term)
+    Greater        reduce using <a href="#prod54">rule 54</a> (term)
+    GreaterEqual   reduce using <a href="#prod54">rule 54</a> (term)
+    Less           reduce using <a href="#prod54">rule 54</a> (term)
+    LessEqual      reduce using <a href="#prod54">rule 54</a> (term)
+    Or             reduce using <a href="#prod54">rule 54</a> (term)
+    And            reduce using <a href="#prod54">rule 54</a> (term)
+    Semicolon      reduce using <a href="#prod54">rule 54</a> (term)
+    ClosePar       reduce using <a href="#prod54">rule 54</a> (term)
+
+
+
+<b><a name="state64">State</a> <a href="#state64">64</a></b>
+    Shortest prefix: Program BracketLeft adding Minus
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state77">77</a>-><a href="#state64">64</a>
+    Predecessors: <a href="#state51">51</a>, <a href="#state68">68</a>, <a href="#state70">70</a>, <a href="#state72">72</a>, <a href="#state74">74</a>, <a href="#state76">76</a>, <a href="#state77">77</a>
+
+  <b>Kernel Items</b>
+    50 adding: adding Minus . term
+
+  <b>Parser Actions</b>
+    Minus          shift, and go to state <a href="#state26">26</a>
+    Tilde          shift, and go to state <a href="#state28">28</a>
+    Not            shift, and go to state <a href="#state30">30</a>
+    OpenPar        shift, and go to state <a href="#state32">32</a>
+    IntNumber      shift, and go to state <a href="#state37">37</a>
+    RealNumber     shift, and go to state <a href="#state38">38</a>
+    Ident          shift, and go to state <a href="#state39">39</a>
+    True           shift, and go to state <a href="#state41">41</a>
+    False          shift, and go to state <a href="#state42">42</a>
+
+  <b>Transitions</b>
+    term           go to state <a href="#state65">65</a>
+    bitexp         go to state <a href="#state63">63</a>
+    unar           go to state <a href="#state60">60</a>
+    factor         go to state <a href="#state36">36</a>
+    boolVar        go to state <a href="#state40">40</a>
+
+
+<b><a name="state65">State</a> <a href="#state65">65</a></b>
+    Shortest prefix: Program BracketLeft adding Minus term
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state77">77</a>-><a href="#state64">64</a>-><a href="#state65">65</a>
+    Predecessors: <a href="#state64">64</a>
+
+  <b>Kernel Items</b>
+    50 adding: adding Minus term .
+	-lookahead: { Plus, Minus, Equal, NotEqual, Greater, GreaterEqual, Less, 
+                LessEqual, Or, And, Semicolon, ClosePar }
+    52 term: term . Multiplies bitexp
+    53 term: term . Divides bitexp
+
+  <b>Parser Actions</b>
+    Multiplies     shift, and go to state <a href="#state54">54</a>
+    Divides        shift, and go to state <a href="#state61">61</a>
+    Plus           reduce using <a href="#prod50">rule 50</a> (adding)
+    Minus          reduce using <a href="#prod50">rule 50</a> (adding)
+    Equal          reduce using <a href="#prod50">rule 50</a> (adding)
+    NotEqual       reduce using <a href="#prod50">rule 50</a> (adding)
+    Greater        reduce using <a href="#prod50">rule 50</a> (adding)
+    GreaterEqual   reduce using <a href="#prod50">rule 50</a> (adding)
+    Less           reduce using <a href="#prod50">rule 50</a> (adding)
+    LessEqual      reduce using <a href="#prod50">rule 50</a> (adding)
+    Or             reduce using <a href="#prod50">rule 50</a> (adding)
+    And            reduce using <a href="#prod50">rule 50</a> (adding)
+    Semicolon      reduce using <a href="#prod50">rule 50</a> (adding)
+    ClosePar       reduce using <a href="#prod50">rule 50</a> (adding)
+
+
+
+<b><a name="state66">State</a> <a href="#state66">66</a></b>
+    Shortest prefix: Program BracketLeft term
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state66">66</a>
+    Predecessors: <a href="#state12">12</a>, <a href="#state16">16</a>, <a href="#state20">20</a>, <a href="#state32">32</a>, <a href="#state46">46</a>, <a href="#state48">48</a>, <a href="#state50">50</a>, <a href="#state67">67</a>, <a href="#state69">69</a>, <a href="#state71">71</a>, <a href="#state73">73</a>, <a href="#state75">75</a>, <a href="#state78">78</a>, <a href="#state84">84</a>, <a href="#state86">86</a>, <a href="#state88">88</a>, 
+                  <a href="#state92">92</a>, <a href="#state94">94</a>, <a href="#state101">101</a>, <a href="#state106">106</a>
+
+  <b>Kernel Items</b>
+    51 adding: term .
+	-lookahead: { Plus, Minus, Equal, NotEqual, Greater, GreaterEqual, Less, 
+                LessEqual, Or, And, Semicolon, ClosePar }
+    52 term: term . Multiplies bitexp
+    53 term: term . Divides bitexp
+
+  <b>Parser Actions</b>
+    Multiplies     shift, and go to state <a href="#state54">54</a>
+    Divides        shift, and go to state <a href="#state61">61</a>
+    Plus           reduce using <a href="#prod51">rule 51</a> (adding)
+    Minus          reduce using <a href="#prod51">rule 51</a> (adding)
+    Equal          reduce using <a href="#prod51">rule 51</a> (adding)
+    NotEqual       reduce using <a href="#prod51">rule 51</a> (adding)
+    Greater        reduce using <a href="#prod51">rule 51</a> (adding)
+    GreaterEqual   reduce using <a href="#prod51">rule 51</a> (adding)
+    Less           reduce using <a href="#prod51">rule 51</a> (adding)
+    LessEqual      reduce using <a href="#prod51">rule 51</a> (adding)
+    Or             reduce using <a href="#prod51">rule 51</a> (adding)
+    And            reduce using <a href="#prod51">rule 51</a> (adding)
+    Semicolon      reduce using <a href="#prod51">rule 51</a> (adding)
+    ClosePar       reduce using <a href="#prod51">rule 51</a> (adding)
+
+
+
+<b><a name="state67">State</a> <a href="#state67">67</a></b>
+    Shortest prefix: Program BracketLeft rel NotEqual
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state80">80</a>-><a href="#state67">67</a>
+    Predecessors: <a href="#state49">49</a>, <a href="#state79">79</a>, <a href="#state80">80</a>
+
+  <b>Kernel Items</b>
+    43 rel: rel NotEqual . adding
+
+  <b>Parser Actions</b>
+    Minus          shift, and go to state <a href="#state26">26</a>
+    Tilde          shift, and go to state <a href="#state28">28</a>
+    Not            shift, and go to state <a href="#state30">30</a>
+    OpenPar        shift, and go to state <a href="#state32">32</a>
+    IntNumber      shift, and go to state <a href="#state37">37</a>
+    RealNumber     shift, and go to state <a href="#state38">38</a>
+    Ident          shift, and go to state <a href="#state39">39</a>
+    True           shift, and go to state <a href="#state41">41</a>
+    False          shift, and go to state <a href="#state42">42</a>
+
+  <b>Transitions</b>
+    adding         go to state <a href="#state68">68</a>
+    term           go to state <a href="#state66">66</a>
+    bitexp         go to state <a href="#state63">63</a>
+    unar           go to state <a href="#state60">60</a>
+    factor         go to state <a href="#state36">36</a>
+    boolVar        go to state <a href="#state40">40</a>
+
+
+<b><a name="state68">State</a> <a href="#state68">68</a></b>
+    Shortest prefix: Program BracketLeft rel NotEqual adding
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state80">80</a>-><a href="#state67">67</a>-><a href="#state68">68</a>
+    Predecessors: <a href="#state67">67</a>
+
+  <b>Kernel Items</b>
+    43 rel: rel NotEqual adding .
+	-lookahead: { Equal, NotEqual, Greater, GreaterEqual, Less, LessEqual, Or, 
+                And, Semicolon, ClosePar }
+    49 adding: adding . Plus term
+    50 adding: adding . Minus term
+
+  <b>Parser Actions</b>
+    Plus           shift, and go to state <a href="#state52">52</a>
+    Minus          shift, and go to state <a href="#state64">64</a>
+    Equal          reduce using <a href="#prod43">rule 43</a> (rel)
+    NotEqual       reduce using <a href="#prod43">rule 43</a> (rel)
+    Greater        reduce using <a href="#prod43">rule 43</a> (rel)
+    GreaterEqual   reduce using <a href="#prod43">rule 43</a> (rel)
+    Less           reduce using <a href="#prod43">rule 43</a> (rel)
+    LessEqual      reduce using <a href="#prod43">rule 43</a> (rel)
+    Or             reduce using <a href="#prod43">rule 43</a> (rel)
+    And            reduce using <a href="#prod43">rule 43</a> (rel)
+    Semicolon      reduce using <a href="#prod43">rule 43</a> (rel)
+    ClosePar       reduce using <a href="#prod43">rule 43</a> (rel)
+
+
+
+<b><a name="state69">State</a> <a href="#state69">69</a></b>
+    Shortest prefix: Program BracketLeft rel Greater
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state80">80</a>-><a href="#state69">69</a>
+    Predecessors: <a href="#state49">49</a>, <a href="#state79">79</a>, <a href="#state80">80</a>
+
+  <b>Kernel Items</b>
+    44 rel: rel Greater . adding
+
+  <b>Parser Actions</b>
+    Minus          shift, and go to state <a href="#state26">26</a>
+    Tilde          shift, and go to state <a href="#state28">28</a>
+    Not            shift, and go to state <a href="#state30">30</a>
+    OpenPar        shift, and go to state <a href="#state32">32</a>
+    IntNumber      shift, and go to state <a href="#state37">37</a>
+    RealNumber     shift, and go to state <a href="#state38">38</a>
+    Ident          shift, and go to state <a href="#state39">39</a>
+    True           shift, and go to state <a href="#state41">41</a>
+    False          shift, and go to state <a href="#state42">42</a>
+
+  <b>Transitions</b>
+    adding         go to state <a href="#state70">70</a>
+    term           go to state <a href="#state66">66</a>
+    bitexp         go to state <a href="#state63">63</a>
+    unar           go to state <a href="#state60">60</a>
+    factor         go to state <a href="#state36">36</a>
+    boolVar        go to state <a href="#state40">40</a>
+
+
+<b><a name="state70">State</a> <a href="#state70">70</a></b>
+    Shortest prefix: Program BracketLeft rel Greater adding
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state80">80</a>-><a href="#state69">69</a>-><a href="#state70">70</a>
+    Predecessors: <a href="#state69">69</a>
+
+  <b>Kernel Items</b>
+    44 rel: rel Greater adding .
+	-lookahead: { Equal, NotEqual, Greater, GreaterEqual, Less, LessEqual, Or, 
+                And, Semicolon, ClosePar }
+    49 adding: adding . Plus term
+    50 adding: adding . Minus term
+
+  <b>Parser Actions</b>
+    Plus           shift, and go to state <a href="#state52">52</a>
+    Minus          shift, and go to state <a href="#state64">64</a>
+    Equal          reduce using <a href="#prod44">rule 44</a> (rel)
+    NotEqual       reduce using <a href="#prod44">rule 44</a> (rel)
+    Greater        reduce using <a href="#prod44">rule 44</a> (rel)
+    GreaterEqual   reduce using <a href="#prod44">rule 44</a> (rel)
+    Less           reduce using <a href="#prod44">rule 44</a> (rel)
+    LessEqual      reduce using <a href="#prod44">rule 44</a> (rel)
+    Or             reduce using <a href="#prod44">rule 44</a> (rel)
+    And            reduce using <a href="#prod44">rule 44</a> (rel)
+    Semicolon      reduce using <a href="#prod44">rule 44</a> (rel)
+    ClosePar       reduce using <a href="#prod44">rule 44</a> (rel)
+
+
+
+<b><a name="state71">State</a> <a href="#state71">71</a></b>
+    Shortest prefix: Program BracketLeft rel GreaterEqual
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state80">80</a>-><a href="#state71">71</a>
+    Predecessors: <a href="#state49">49</a>, <a href="#state79">79</a>, <a href="#state80">80</a>
+
+  <b>Kernel Items</b>
+    45 rel: rel GreaterEqual . adding
+
+  <b>Parser Actions</b>
+    Minus          shift, and go to state <a href="#state26">26</a>
+    Tilde          shift, and go to state <a href="#state28">28</a>
+    Not            shift, and go to state <a href="#state30">30</a>
+    OpenPar        shift, and go to state <a href="#state32">32</a>
+    IntNumber      shift, and go to state <a href="#state37">37</a>
+    RealNumber     shift, and go to state <a href="#state38">38</a>
+    Ident          shift, and go to state <a href="#state39">39</a>
+    True           shift, and go to state <a href="#state41">41</a>
+    False          shift, and go to state <a href="#state42">42</a>
+
+  <b>Transitions</b>
+    adding         go to state <a href="#state72">72</a>
+    term           go to state <a href="#state66">66</a>
+    bitexp         go to state <a href="#state63">63</a>
+    unar           go to state <a href="#state60">60</a>
+    factor         go to state <a href="#state36">36</a>
+    boolVar        go to state <a href="#state40">40</a>
+
+
+<b><a name="state72">State</a> <a href="#state72">72</a></b>
+    Shortest prefix: Program BracketLeft rel GreaterEqual adding
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state80">80</a>-><a href="#state71">71</a>-><a href="#state72">72</a>
+    Predecessors: <a href="#state71">71</a>
+
+  <b>Kernel Items</b>
+    45 rel: rel GreaterEqual adding .
+	-lookahead: { Equal, NotEqual, Greater, GreaterEqual, Less, LessEqual, Or, 
+                And, Semicolon, ClosePar }
+    49 adding: adding . Plus term
+    50 adding: adding . Minus term
+
+  <b>Parser Actions</b>
+    Plus           shift, and go to state <a href="#state52">52</a>
+    Minus          shift, and go to state <a href="#state64">64</a>
+    Equal          reduce using <a href="#prod45">rule 45</a> (rel)
+    NotEqual       reduce using <a href="#prod45">rule 45</a> (rel)
+    Greater        reduce using <a href="#prod45">rule 45</a> (rel)
+    GreaterEqual   reduce using <a href="#prod45">rule 45</a> (rel)
+    Less           reduce using <a href="#prod45">rule 45</a> (rel)
+    LessEqual      reduce using <a href="#prod45">rule 45</a> (rel)
+    Or             reduce using <a href="#prod45">rule 45</a> (rel)
+    And            reduce using <a href="#prod45">rule 45</a> (rel)
+    Semicolon      reduce using <a href="#prod45">rule 45</a> (rel)
+    ClosePar       reduce using <a href="#prod45">rule 45</a> (rel)
+
+
+
+<b><a name="state73">State</a> <a href="#state73">73</a></b>
+    Shortest prefix: Program BracketLeft rel Less
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state80">80</a>-><a href="#state73">73</a>
+    Predecessors: <a href="#state49">49</a>, <a href="#state79">79</a>, <a href="#state80">80</a>
+
+  <b>Kernel Items</b>
+    46 rel: rel Less . adding
+
+  <b>Parser Actions</b>
+    Minus          shift, and go to state <a href="#state26">26</a>
+    Tilde          shift, and go to state <a href="#state28">28</a>
+    Not            shift, and go to state <a href="#state30">30</a>
+    OpenPar        shift, and go to state <a href="#state32">32</a>
+    IntNumber      shift, and go to state <a href="#state37">37</a>
+    RealNumber     shift, and go to state <a href="#state38">38</a>
+    Ident          shift, and go to state <a href="#state39">39</a>
+    True           shift, and go to state <a href="#state41">41</a>
+    False          shift, and go to state <a href="#state42">42</a>
+
+  <b>Transitions</b>
+    adding         go to state <a href="#state74">74</a>
+    term           go to state <a href="#state66">66</a>
+    bitexp         go to state <a href="#state63">63</a>
+    unar           go to state <a href="#state60">60</a>
+    factor         go to state <a href="#state36">36</a>
+    boolVar        go to state <a href="#state40">40</a>
+
+
+<b><a name="state74">State</a> <a href="#state74">74</a></b>
+    Shortest prefix: Program BracketLeft rel Less adding
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state80">80</a>-><a href="#state73">73</a>-><a href="#state74">74</a>
+    Predecessors: <a href="#state73">73</a>
+
+  <b>Kernel Items</b>
+    46 rel: rel Less adding .
+	-lookahead: { Equal, NotEqual, Greater, GreaterEqual, Less, LessEqual, Or, 
+                And, Semicolon, ClosePar }
+    49 adding: adding . Plus term
+    50 adding: adding . Minus term
+
+  <b>Parser Actions</b>
+    Plus           shift, and go to state <a href="#state52">52</a>
+    Minus          shift, and go to state <a href="#state64">64</a>
+    Equal          reduce using <a href="#prod46">rule 46</a> (rel)
+    NotEqual       reduce using <a href="#prod46">rule 46</a> (rel)
+    Greater        reduce using <a href="#prod46">rule 46</a> (rel)
+    GreaterEqual   reduce using <a href="#prod46">rule 46</a> (rel)
+    Less           reduce using <a href="#prod46">rule 46</a> (rel)
+    LessEqual      reduce using <a href="#prod46">rule 46</a> (rel)
+    Or             reduce using <a href="#prod46">rule 46</a> (rel)
+    And            reduce using <a href="#prod46">rule 46</a> (rel)
+    Semicolon      reduce using <a href="#prod46">rule 46</a> (rel)
+    ClosePar       reduce using <a href="#prod46">rule 46</a> (rel)
+
+
+
+<b><a name="state75">State</a> <a href="#state75">75</a></b>
+    Shortest prefix: Program BracketLeft rel LessEqual
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state80">80</a>-><a href="#state75">75</a>
+    Predecessors: <a href="#state49">49</a>, <a href="#state79">79</a>, <a href="#state80">80</a>
+
+  <b>Kernel Items</b>
+    47 rel: rel LessEqual . adding
+
+  <b>Parser Actions</b>
+    Minus          shift, and go to state <a href="#state26">26</a>
+    Tilde          shift, and go to state <a href="#state28">28</a>
+    Not            shift, and go to state <a href="#state30">30</a>
+    OpenPar        shift, and go to state <a href="#state32">32</a>
+    IntNumber      shift, and go to state <a href="#state37">37</a>
+    RealNumber     shift, and go to state <a href="#state38">38</a>
+    Ident          shift, and go to state <a href="#state39">39</a>
+    True           shift, and go to state <a href="#state41">41</a>
+    False          shift, and go to state <a href="#state42">42</a>
+
+  <b>Transitions</b>
+    adding         go to state <a href="#state76">76</a>
+    term           go to state <a href="#state66">66</a>
+    bitexp         go to state <a href="#state63">63</a>
+    unar           go to state <a href="#state60">60</a>
+    factor         go to state <a href="#state36">36</a>
+    boolVar        go to state <a href="#state40">40</a>
+
+
+<b><a name="state76">State</a> <a href="#state76">76</a></b>
+    Shortest prefix: Program BracketLeft rel LessEqual adding
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state80">80</a>-><a href="#state75">75</a>-><a href="#state76">76</a>
+    Predecessors: <a href="#state75">75</a>
+
+  <b>Kernel Items</b>
+    47 rel: rel LessEqual adding .
+	-lookahead: { Equal, NotEqual, Greater, GreaterEqual, Less, LessEqual, Or, 
+                And, Semicolon, ClosePar }
+    49 adding: adding . Plus term
+    50 adding: adding . Minus term
+
+  <b>Parser Actions</b>
+    Plus           shift, and go to state <a href="#state52">52</a>
+    Minus          shift, and go to state <a href="#state64">64</a>
+    Equal          reduce using <a href="#prod47">rule 47</a> (rel)
+    NotEqual       reduce using <a href="#prod47">rule 47</a> (rel)
+    Greater        reduce using <a href="#prod47">rule 47</a> (rel)
+    GreaterEqual   reduce using <a href="#prod47">rule 47</a> (rel)
+    Less           reduce using <a href="#prod47">rule 47</a> (rel)
+    LessEqual      reduce using <a href="#prod47">rule 47</a> (rel)
+    Or             reduce using <a href="#prod47">rule 47</a> (rel)
+    And            reduce using <a href="#prod47">rule 47</a> (rel)
+    Semicolon      reduce using <a href="#prod47">rule 47</a> (rel)
+    ClosePar       reduce using <a href="#prod47">rule 47</a> (rel)
+
+
+
+<b><a name="state77">State</a> <a href="#state77">77</a></b>
+    Shortest prefix: Program BracketLeft adding
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state77">77</a>
+    Predecessors: <a href="#state12">12</a>, <a href="#state16">16</a>, <a href="#state20">20</a>, <a href="#state32">32</a>, <a href="#state46">46</a>, <a href="#state48">48</a>, <a href="#state78">78</a>, <a href="#state84">84</a>, <a href="#state86">86</a>, <a href="#state88">88</a>, <a href="#state92">92</a>, <a href="#state94">94</a>, <a href="#state101">101</a>, <a href="#state106">106</a>
+
+  <b>Kernel Items</b>
+    48 rel: adding .
+	-lookahead: { Equal, NotEqual, Greater, GreaterEqual, Less, LessEqual, Or, 
+                And, Semicolon, ClosePar }
+    49 adding: adding . Plus term
+    50 adding: adding . Minus term
+
+  <b>Parser Actions</b>
+    Plus           shift, and go to state <a href="#state52">52</a>
+    Minus          shift, and go to state <a href="#state64">64</a>
+    Equal          reduce using <a href="#prod48">rule 48</a> (rel)
+    NotEqual       reduce using <a href="#prod48">rule 48</a> (rel)
+    Greater        reduce using <a href="#prod48">rule 48</a> (rel)
+    GreaterEqual   reduce using <a href="#prod48">rule 48</a> (rel)
+    Less           reduce using <a href="#prod48">rule 48</a> (rel)
+    LessEqual      reduce using <a href="#prod48">rule 48</a> (rel)
+    Or             reduce using <a href="#prod48">rule 48</a> (rel)
+    And            reduce using <a href="#prod48">rule 48</a> (rel)
+    Semicolon      reduce using <a href="#prod48">rule 48</a> (rel)
+    ClosePar       reduce using <a href="#prod48">rule 48</a> (rel)
+
+
+
+<b><a name="state78">State</a> <a href="#state78">78</a></b>
+    Shortest prefix: Program BracketLeft logic And
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state81">81</a>-><a href="#state78">78</a>
+    Predecessors: <a href="#state47">47</a>, <a href="#state81">81</a>
+
+  <b>Kernel Items</b>
+    40 logic: logic And . rel
+
+  <b>Parser Actions</b>
+    Minus          shift, and go to state <a href="#state26">26</a>
+    Tilde          shift, and go to state <a href="#state28">28</a>
+    Not            shift, and go to state <a href="#state30">30</a>
+    OpenPar        shift, and go to state <a href="#state32">32</a>
+    IntNumber      shift, and go to state <a href="#state37">37</a>
+    RealNumber     shift, and go to state <a href="#state38">38</a>
+    Ident          shift, and go to state <a href="#state39">39</a>
+    True           shift, and go to state <a href="#state41">41</a>
+    False          shift, and go to state <a href="#state42">42</a>
+
+  <b>Transitions</b>
+    rel            go to state <a href="#state79">79</a>
+    adding         go to state <a href="#state77">77</a>
+    term           go to state <a href="#state66">66</a>
+    bitexp         go to state <a href="#state63">63</a>
+    unar           go to state <a href="#state60">60</a>
+    factor         go to state <a href="#state36">36</a>
+    boolVar        go to state <a href="#state40">40</a>
+
+
+<b><a name="state79">State</a> <a href="#state79">79</a></b>
+    Shortest prefix: Program BracketLeft logic And rel
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state81">81</a>-><a href="#state78">78</a>-><a href="#state79">79</a>
+    Predecessors: <a href="#state78">78</a>
+
+  <b>Kernel Items</b>
+    40 logic: logic And rel .
+	-lookahead: { Or, And, Semicolon, ClosePar }
+    42 rel: rel . Equal adding
+    43 rel: rel . NotEqual adding
+    44 rel: rel . Greater adding
+    45 rel: rel . GreaterEqual adding
+    46 rel: rel . Less adding
+    47 rel: rel . LessEqual adding
+
+  <b>Parser Actions</b>
+    Equal          shift, and go to state <a href="#state50">50</a>
+    NotEqual       shift, and go to state <a href="#state67">67</a>
+    Greater        shift, and go to state <a href="#state69">69</a>
+    GreaterEqual   shift, and go to state <a href="#state71">71</a>
+    Less           shift, and go to state <a href="#state73">73</a>
+    LessEqual      shift, and go to state <a href="#state75">75</a>
+    Or             reduce using <a href="#prod40">rule 40</a> (logic)
+    And            reduce using <a href="#prod40">rule 40</a> (logic)
+    Semicolon      reduce using <a href="#prod40">rule 40</a> (logic)
+    ClosePar       reduce using <a href="#prod40">rule 40</a> (logic)
+
+
+
+<b><a name="state80">State</a> <a href="#state80">80</a></b>
+    Shortest prefix: Program BracketLeft rel
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state80">80</a>
+    Predecessors: <a href="#state12">12</a>, <a href="#state16">16</a>, <a href="#state20">20</a>, <a href="#state32">32</a>, <a href="#state46">46</a>, <a href="#state84">84</a>, <a href="#state86">86</a>, <a href="#state88">88</a>, <a href="#state92">92</a>, <a href="#state94">94</a>, <a href="#state101">101</a>, <a href="#state106">106</a>
+
+  <b>Kernel Items</b>
+    41 logic: rel .
+	-lookahead: { Or, And, Semicolon, ClosePar }
+    42 rel: rel . Equal adding
+    43 rel: rel . NotEqual adding
+    44 rel: rel . Greater adding
+    45 rel: rel . GreaterEqual adding
+    46 rel: rel . Less adding
+    47 rel: rel . LessEqual adding
+
+  <b>Parser Actions</b>
+    Equal          shift, and go to state <a href="#state50">50</a>
+    NotEqual       shift, and go to state <a href="#state67">67</a>
+    Greater        shift, and go to state <a href="#state69">69</a>
+    GreaterEqual   shift, and go to state <a href="#state71">71</a>
+    Less           shift, and go to state <a href="#state73">73</a>
+    LessEqual      shift, and go to state <a href="#state75">75</a>
+    Or             reduce using <a href="#prod41">rule 41</a> (logic)
+    And            reduce using <a href="#prod41">rule 41</a> (logic)
+    Semicolon      reduce using <a href="#prod41">rule 41</a> (logic)
+    ClosePar       reduce using <a href="#prod41">rule 41</a> (logic)
+
+
+
+<b><a name="state81">State</a> <a href="#state81">81</a></b>
+    Shortest prefix: Program BracketLeft logic
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state81">81</a>
+    Predecessors: <a href="#state12">12</a>, <a href="#state16">16</a>, <a href="#state20">20</a>, <a href="#state32">32</a>, <a href="#state84">84</a>, <a href="#state86">86</a>, <a href="#state88">88</a>, <a href="#state92">92</a>, <a href="#state94">94</a>, <a href="#state101">101</a>, <a href="#state106">106</a>
+
+  <b>Kernel Items</b>
+    38 exp: logic .
+	-lookahead: { Semicolon, ClosePar }
+    39 logic: logic . Or rel
+    40 logic: logic . And rel
+
+  <b>Parser Actions</b>
+    Or             shift, and go to state <a href="#state48">48</a>
+    And            shift, and go to state <a href="#state78">78</a>
+    Semicolon      reduce using <a href="#prod38">rule 38</a> (exp)
+    ClosePar       reduce using <a href="#prod38">rule 38</a> (exp)
+
+
+
+<b><a name="state82">State</a> <a href="#state82">82</a></b>
+    Shortest prefix: Program BracketLeft cond
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state82">82</a>
+    Predecessors: <a href="#state12">12</a>, <a href="#state16">16</a>, <a href="#state86">86</a>, <a href="#state88">88</a>, <a href="#state94">94</a>
+
+  <b>Kernel Items</b>
+    23 instr: cond .
+	-lookahead: { BracketLeft, OpenPar, Ident, Minus, Tilde, Not, IntNumber, 
+                RealNumber, True, False, If, While, Read, Write, Return, 
+                error, BracketRight, Else }
+
+  <b>Parser Actions</b>
+    BracketLeft    reduce using <a href="#prod23">rule 23</a> (instr)
+    OpenPar        reduce using <a href="#prod23">rule 23</a> (instr)
+    Ident          reduce using <a href="#prod23">rule 23</a> (instr)
+    Minus          reduce using <a href="#prod23">rule 23</a> (instr)
+    Tilde          reduce using <a href="#prod23">rule 23</a> (instr)
+    Not            reduce using <a href="#prod23">rule 23</a> (instr)
+    IntNumber      reduce using <a href="#prod23">rule 23</a> (instr)
+    RealNumber     reduce using <a href="#prod23">rule 23</a> (instr)
+    True           reduce using <a href="#prod23">rule 23</a> (instr)
+    False          reduce using <a href="#prod23">rule 23</a> (instr)
+    If             reduce using <a href="#prod23">rule 23</a> (instr)
+    While          reduce using <a href="#prod23">rule 23</a> (instr)
+    Read           reduce using <a href="#prod23">rule 23</a> (instr)
+    Write          reduce using <a href="#prod23">rule 23</a> (instr)
+    Return         reduce using <a href="#prod23">rule 23</a> (instr)
+    error          reduce using <a href="#prod23">rule 23</a> (instr)
+    BracketRight   reduce using <a href="#prod23">rule 23</a> (instr)
+    Else           reduce using <a href="#prod23">rule 23</a> (instr)
+
+
+
+<b><a name="state83">State</a> <a href="#state83">83</a></b>
+    Shortest prefix: Program BracketLeft If
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state83">83</a>
+    Predecessors: <a href="#state12">12</a>, <a href="#state16">16</a>, <a href="#state86">86</a>, <a href="#state88">88</a>, <a href="#state94">94</a>
+
+  <b>Kernel Items</b>
+    29 cond: If . OpenPar exp ClosePar instr
+    30 cond: If . OpenPar exp ClosePar instr Else instr
+
+  <b>Parser Actions</b>
+    OpenPar        shift, and go to state <a href="#state84">84</a>
+
+
+
+<b><a name="state84">State</a> <a href="#state84">84</a></b>
+    Shortest prefix: Program BracketLeft If OpenPar
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state83">83</a>-><a href="#state84">84</a>
+    Predecessors: <a href="#state83">83</a>
+
+  <b>Kernel Items</b>
+    29 cond: If OpenPar . exp ClosePar instr
+    30 cond: If OpenPar . exp ClosePar instr Else instr
+
+  <b>Parser Actions</b>
+    OpenPar        shift, and go to state <a href="#state20">20</a>
+    Ident          shift, and go to state <a href="#state45">45</a>
+    Minus          shift, and go to state <a href="#state26">26</a>
+    Tilde          shift, and go to state <a href="#state28">28</a>
+    Not            shift, and go to state <a href="#state30">30</a>
+    IntNumber      shift, and go to state <a href="#state37">37</a>
+    RealNumber     shift, and go to state <a href="#state38">38</a>
+    True           shift, and go to state <a href="#state41">41</a>
+    False          shift, and go to state <a href="#state42">42</a>
+
+  <b>Transitions</b>
+    exp            go to state <a href="#state85">85</a>
+    logic          go to state <a href="#state81">81</a>
+    rel            go to state <a href="#state80">80</a>
+    adding         go to state <a href="#state77">77</a>
+    term           go to state <a href="#state66">66</a>
+    bitexp         go to state <a href="#state63">63</a>
+    unar           go to state <a href="#state60">60</a>
+    factor         go to state <a href="#state36">36</a>
+    boolVar        go to state <a href="#state40">40</a>
+
+
+<b><a name="state85">State</a> <a href="#state85">85</a></b>
+    Shortest prefix: Program BracketLeft If OpenPar exp
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state83">83</a>-><a href="#state84">84</a>-><a href="#state85">85</a>
+    Predecessors: <a href="#state84">84</a>
+
+  <b>Kernel Items</b>
+    29 cond: If OpenPar exp . ClosePar instr
+    30 cond: If OpenPar exp . ClosePar instr Else instr
+
+  <b>Parser Actions</b>
+    ClosePar       shift, and go to state <a href="#state86">86</a>
+
+
+
+<b><a name="state86">State</a> <a href="#state86">86</a></b>
+    Shortest prefix: Program BracketLeft If OpenPar exp ClosePar
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state83">83</a>-><a href="#state84">84</a>-><a href="#state85">85</a>-><a href="#state86">86</a>
+    Predecessors: <a href="#state85">85</a>
+
+  <b>Kernel Items</b>
+    29 cond: If OpenPar exp ClosePar . instr
+    30 cond: If OpenPar exp ClosePar . instr Else instr
+
+  <b>Parser Actions</b>
+    BracketLeft    shift, and go to state <a href="#state14">14</a>
+    OpenPar        shift, and go to state <a href="#state20">20</a>
+    Ident          shift, and go to state <a href="#state45">45</a>
+    Minus          shift, and go to state <a href="#state26">26</a>
+    Tilde          shift, and go to state <a href="#state28">28</a>
+    Not            shift, and go to state <a href="#state30">30</a>
+    IntNumber      shift, and go to state <a href="#state37">37</a>
+    RealNumber     shift, and go to state <a href="#state38">38</a>
+    True           shift, and go to state <a href="#state41">41</a>
+    False          shift, and go to state <a href="#state42">42</a>
+    If             shift, and go to state <a href="#state83">83</a>
+    While          shift, and go to state <a href="#state91">91</a>
+    Read           shift, and go to state <a href="#state97">97</a>
+    Write          shift, and go to state <a href="#state101">101</a>
+    Return         shift, and go to state <a href="#state110">110</a>
+    error          shift, and go to state <a href="#state112">112</a>
+
+  <b>Transitions</b>
+    instr          go to state <a href="#state87">87</a>
+    exp            go to state <a href="#state18">18</a>
+    logic          go to state <a href="#state81">81</a>
+    rel            go to state <a href="#state80">80</a>
+    adding         go to state <a href="#state77">77</a>
+    term           go to state <a href="#state66">66</a>
+    bitexp         go to state <a href="#state63">63</a>
+    unar           go to state <a href="#state60">60</a>
+    factor         go to state <a href="#state36">36</a>
+    boolVar        go to state <a href="#state40">40</a>
+    cond           go to state <a href="#state82">82</a>
+    whileLoop      go to state <a href="#state90">90</a>
+    inRead         go to state <a href="#state96">96</a>
+    outWrite       go to state <a href="#state100">100</a>
+
+
+<b><a name="state87">State</a> <a href="#state87">87</a></b>
+    Shortest prefix: Program BracketLeft If OpenPar exp ClosePar instr
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state83">83</a>-><a href="#state84">84</a>-><a href="#state85">85</a>-><a href="#state86">86</a>-><a href="#state87">87</a>
+    Predecessors: <a href="#state86">86</a>
+
+  <b>Kernel Items</b>
+    29 cond: If OpenPar exp ClosePar instr .
+	-lookahead: { BracketLeft, OpenPar, Ident, Minus, Tilde, Not, IntNumber, 
+                RealNumber, True, False, If, While, Read, Write, Return, 
+                error, BracketRight, Else }
+    30 cond: If OpenPar exp ClosePar instr . Else instr
+
+    <b>Conflicts in this state</b>
+      Shift/Reduce conflict on symbol "Else", parser will shift
+       Shift "Else":	State-87 -> State-88
+       Reduce 29:	cond -> If, OpenPar, exp, ClosePar, instr
+      ---------
+
+  <b>Parser Actions</b>
+    Else           shift, and go to state <a href="#state88">88</a>
+    BracketLeft    reduce using <a href="#prod29">rule 29</a> (cond)
+    OpenPar        reduce using <a href="#prod29">rule 29</a> (cond)
+    Ident          reduce using <a href="#prod29">rule 29</a> (cond)
+    Minus          reduce using <a href="#prod29">rule 29</a> (cond)
+    Tilde          reduce using <a href="#prod29">rule 29</a> (cond)
+    Not            reduce using <a href="#prod29">rule 29</a> (cond)
+    IntNumber      reduce using <a href="#prod29">rule 29</a> (cond)
+    RealNumber     reduce using <a href="#prod29">rule 29</a> (cond)
+    True           reduce using <a href="#prod29">rule 29</a> (cond)
+    False          reduce using <a href="#prod29">rule 29</a> (cond)
+    If             reduce using <a href="#prod29">rule 29</a> (cond)
+    While          reduce using <a href="#prod29">rule 29</a> (cond)
+    Read           reduce using <a href="#prod29">rule 29</a> (cond)
+    Write          reduce using <a href="#prod29">rule 29</a> (cond)
+    Return         reduce using <a href="#prod29">rule 29</a> (cond)
+    error          reduce using <a href="#prod29">rule 29</a> (cond)
+    BracketRight   reduce using <a href="#prod29">rule 29</a> (cond)
+
+
+
+<b><a name="state88">State</a> <a href="#state88">88</a></b>
+    Shortest prefix: Program BracketLeft If OpenPar exp ClosePar instr Else
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state83">83</a>-><a href="#state84">84</a>-><a href="#state85">85</a>-><a href="#state86">86</a>-><a href="#state87">87</a>-><a href="#state88">88</a>
+    Predecessors: <a href="#state87">87</a>
+
+  <b>Kernel Items</b>
+    30 cond: If OpenPar exp ClosePar instr Else . instr
+
+  <b>Parser Actions</b>
+    BracketLeft    shift, and go to state <a href="#state14">14</a>
+    OpenPar        shift, and go to state <a href="#state20">20</a>
+    Ident          shift, and go to state <a href="#state45">45</a>
+    Minus          shift, and go to state <a href="#state26">26</a>
+    Tilde          shift, and go to state <a href="#state28">28</a>
+    Not            shift, and go to state <a href="#state30">30</a>
+    IntNumber      shift, and go to state <a href="#state37">37</a>
+    RealNumber     shift, and go to state <a href="#state38">38</a>
+    True           shift, and go to state <a href="#state41">41</a>
+    False          shift, and go to state <a href="#state42">42</a>
+    If             shift, and go to state <a href="#state83">83</a>
+    While          shift, and go to state <a href="#state91">91</a>
+    Read           shift, and go to state <a href="#state97">97</a>
+    Write          shift, and go to state <a href="#state101">101</a>
+    Return         shift, and go to state <a href="#state110">110</a>
+    error          shift, and go to state <a href="#state112">112</a>
+
+  <b>Transitions</b>
+    instr          go to state <a href="#state89">89</a>
+    exp            go to state <a href="#state18">18</a>
+    logic          go to state <a href="#state81">81</a>
+    rel            go to state <a href="#state80">80</a>
+    adding         go to state <a href="#state77">77</a>
+    term           go to state <a href="#state66">66</a>
+    bitexp         go to state <a href="#state63">63</a>
+    unar           go to state <a href="#state60">60</a>
+    factor         go to state <a href="#state36">36</a>
+    boolVar        go to state <a href="#state40">40</a>
+    cond           go to state <a href="#state82">82</a>
+    whileLoop      go to state <a href="#state90">90</a>
+    inRead         go to state <a href="#state96">96</a>
+    outWrite       go to state <a href="#state100">100</a>
+
+
+<b><a name="state89">State</a> <a href="#state89">89</a></b>
+    Shortest prefix: Program BracketLeft If OpenPar exp ClosePar instr Else instr
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state83">83</a>-><a href="#state84">84</a>-><a href="#state85">85</a>-><a href="#state86">86</a>-><a href="#state87">87</a>-><a href="#state88">88</a>-><a href="#state89">89</a>
+    Predecessors: <a href="#state88">88</a>
+
+  <b>Kernel Items</b>
+    30 cond: If OpenPar exp ClosePar instr Else instr .
+	-lookahead: { BracketLeft, OpenPar, Ident, Minus, Tilde, Not, IntNumber, 
+                RealNumber, True, False, If, While, Read, Write, Return, 
+                error, BracketRight, Else }
+
+  <b>Parser Actions</b>
+    BracketLeft    reduce using <a href="#prod30">rule 30</a> (cond)
+    OpenPar        reduce using <a href="#prod30">rule 30</a> (cond)
+    Ident          reduce using <a href="#prod30">rule 30</a> (cond)
+    Minus          reduce using <a href="#prod30">rule 30</a> (cond)
+    Tilde          reduce using <a href="#prod30">rule 30</a> (cond)
+    Not            reduce using <a href="#prod30">rule 30</a> (cond)
+    IntNumber      reduce using <a href="#prod30">rule 30</a> (cond)
+    RealNumber     reduce using <a href="#prod30">rule 30</a> (cond)
+    True           reduce using <a href="#prod30">rule 30</a> (cond)
+    False          reduce using <a href="#prod30">rule 30</a> (cond)
+    If             reduce using <a href="#prod30">rule 30</a> (cond)
+    While          reduce using <a href="#prod30">rule 30</a> (cond)
+    Read           reduce using <a href="#prod30">rule 30</a> (cond)
+    Write          reduce using <a href="#prod30">rule 30</a> (cond)
+    Return         reduce using <a href="#prod30">rule 30</a> (cond)
+    error          reduce using <a href="#prod30">rule 30</a> (cond)
+    BracketRight   reduce using <a href="#prod30">rule 30</a> (cond)
+    Else           reduce using <a href="#prod30">rule 30</a> (cond)
+
+
+
+<b><a name="state90">State</a> <a href="#state90">90</a></b>
+    Shortest prefix: Program BracketLeft whileLoop
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state90">90</a>
+    Predecessors: <a href="#state12">12</a>, <a href="#state16">16</a>, <a href="#state86">86</a>, <a href="#state88">88</a>, <a href="#state94">94</a>
+
+  <b>Kernel Items</b>
+    24 instr: whileLoop .
+	-lookahead: { BracketLeft, OpenPar, Ident, Minus, Tilde, Not, IntNumber, 
+                RealNumber, True, False, If, While, Read, Write, Return, 
+                error, BracketRight, Else }
+
+  <b>Parser Actions</b>
+    BracketLeft    reduce using <a href="#prod24">rule 24</a> (instr)
+    OpenPar        reduce using <a href="#prod24">rule 24</a> (instr)
+    Ident          reduce using <a href="#prod24">rule 24</a> (instr)
+    Minus          reduce using <a href="#prod24">rule 24</a> (instr)
+    Tilde          reduce using <a href="#prod24">rule 24</a> (instr)
+    Not            reduce using <a href="#prod24">rule 24</a> (instr)
+    IntNumber      reduce using <a href="#prod24">rule 24</a> (instr)
+    RealNumber     reduce using <a href="#prod24">rule 24</a> (instr)
+    True           reduce using <a href="#prod24">rule 24</a> (instr)
+    False          reduce using <a href="#prod24">rule 24</a> (instr)
+    If             reduce using <a href="#prod24">rule 24</a> (instr)
+    While          reduce using <a href="#prod24">rule 24</a> (instr)
+    Read           reduce using <a href="#prod24">rule 24</a> (instr)
+    Write          reduce using <a href="#prod24">rule 24</a> (instr)
+    Return         reduce using <a href="#prod24">rule 24</a> (instr)
+    error          reduce using <a href="#prod24">rule 24</a> (instr)
+    BracketRight   reduce using <a href="#prod24">rule 24</a> (instr)
+    Else           reduce using <a href="#prod24">rule 24</a> (instr)
+
+
+
+<b><a name="state91">State</a> <a href="#state91">91</a></b>
+    Shortest prefix: Program BracketLeft While
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state91">91</a>
+    Predecessors: <a href="#state12">12</a>, <a href="#state16">16</a>, <a href="#state86">86</a>, <a href="#state88">88</a>, <a href="#state94">94</a>
+
+  <b>Kernel Items</b>
+    31 whileLoop: While . OpenPar exp ClosePar instr
+
+  <b>Parser Actions</b>
+    OpenPar        shift, and go to state <a href="#state92">92</a>
+
+
+
+<b><a name="state92">State</a> <a href="#state92">92</a></b>
+    Shortest prefix: Program BracketLeft While OpenPar
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state91">91</a>-><a href="#state92">92</a>
+    Predecessors: <a href="#state91">91</a>
+
+  <b>Kernel Items</b>
+    31 whileLoop: While OpenPar . exp ClosePar instr
+
+  <b>Parser Actions</b>
+    OpenPar        shift, and go to state <a href="#state20">20</a>
+    Ident          shift, and go to state <a href="#state45">45</a>
+    Minus          shift, and go to state <a href="#state26">26</a>
+    Tilde          shift, and go to state <a href="#state28">28</a>
+    Not            shift, and go to state <a href="#state30">30</a>
+    IntNumber      shift, and go to state <a href="#state37">37</a>
+    RealNumber     shift, and go to state <a href="#state38">38</a>
+    True           shift, and go to state <a href="#state41">41</a>
+    False          shift, and go to state <a href="#state42">42</a>
+
+  <b>Transitions</b>
+    exp            go to state <a href="#state93">93</a>
+    logic          go to state <a href="#state81">81</a>
+    rel            go to state <a href="#state80">80</a>
+    adding         go to state <a href="#state77">77</a>
+    term           go to state <a href="#state66">66</a>
+    bitexp         go to state <a href="#state63">63</a>
+    unar           go to state <a href="#state60">60</a>
+    factor         go to state <a href="#state36">36</a>
+    boolVar        go to state <a href="#state40">40</a>
+
+
+<b><a name="state93">State</a> <a href="#state93">93</a></b>
+    Shortest prefix: Program BracketLeft While OpenPar exp
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state91">91</a>-><a href="#state92">92</a>-><a href="#state93">93</a>
+    Predecessors: <a href="#state92">92</a>
+
+  <b>Kernel Items</b>
+    31 whileLoop: While OpenPar exp . ClosePar instr
+
+  <b>Parser Actions</b>
+    ClosePar       shift, and go to state <a href="#state94">94</a>
+
+
+
+<b><a name="state94">State</a> <a href="#state94">94</a></b>
+    Shortest prefix: Program BracketLeft While OpenPar exp ClosePar
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state91">91</a>-><a href="#state92">92</a>-><a href="#state93">93</a>-><a href="#state94">94</a>
+    Predecessors: <a href="#state93">93</a>
+
+  <b>Kernel Items</b>
+    31 whileLoop: While OpenPar exp ClosePar . instr
+
+  <b>Parser Actions</b>
+    BracketLeft    shift, and go to state <a href="#state14">14</a>
+    OpenPar        shift, and go to state <a href="#state20">20</a>
+    Ident          shift, and go to state <a href="#state45">45</a>
+    Minus          shift, and go to state <a href="#state26">26</a>
+    Tilde          shift, and go to state <a href="#state28">28</a>
+    Not            shift, and go to state <a href="#state30">30</a>
+    IntNumber      shift, and go to state <a href="#state37">37</a>
+    RealNumber     shift, and go to state <a href="#state38">38</a>
+    True           shift, and go to state <a href="#state41">41</a>
+    False          shift, and go to state <a href="#state42">42</a>
+    If             shift, and go to state <a href="#state83">83</a>
+    While          shift, and go to state <a href="#state91">91</a>
+    Read           shift, and go to state <a href="#state97">97</a>
+    Write          shift, and go to state <a href="#state101">101</a>
+    Return         shift, and go to state <a href="#state110">110</a>
+    error          shift, and go to state <a href="#state112">112</a>
+
+  <b>Transitions</b>
+    instr          go to state <a href="#state95">95</a>
+    exp            go to state <a href="#state18">18</a>
+    logic          go to state <a href="#state81">81</a>
+    rel            go to state <a href="#state80">80</a>
+    adding         go to state <a href="#state77">77</a>
+    term           go to state <a href="#state66">66</a>
+    bitexp         go to state <a href="#state63">63</a>
+    unar           go to state <a href="#state60">60</a>
+    factor         go to state <a href="#state36">36</a>
+    boolVar        go to state <a href="#state40">40</a>
+    cond           go to state <a href="#state82">82</a>
+    whileLoop      go to state <a href="#state90">90</a>
+    inRead         go to state <a href="#state96">96</a>
+    outWrite       go to state <a href="#state100">100</a>
+
+
+<b><a name="state95">State</a> <a href="#state95">95</a></b>
+    Shortest prefix: Program BracketLeft While OpenPar exp ClosePar instr
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state91">91</a>-><a href="#state92">92</a>-><a href="#state93">93</a>-><a href="#state94">94</a>-><a href="#state95">95</a>
+    Predecessors: <a href="#state94">94</a>
+
+  <b>Kernel Items</b>
+    31 whileLoop: While OpenPar exp ClosePar instr .
+	-lookahead: { BracketLeft, OpenPar, Ident, Minus, Tilde, Not, IntNumber, 
+                RealNumber, True, False, If, While, Read, Write, Return, 
+                error, BracketRight, Else }
+
+  <b>Parser Actions</b>
+    BracketLeft    reduce using <a href="#prod31">rule 31</a> (whileLoop)
+    OpenPar        reduce using <a href="#prod31">rule 31</a> (whileLoop)
+    Ident          reduce using <a href="#prod31">rule 31</a> (whileLoop)
+    Minus          reduce using <a href="#prod31">rule 31</a> (whileLoop)
+    Tilde          reduce using <a href="#prod31">rule 31</a> (whileLoop)
+    Not            reduce using <a href="#prod31">rule 31</a> (whileLoop)
+    IntNumber      reduce using <a href="#prod31">rule 31</a> (whileLoop)
+    RealNumber     reduce using <a href="#prod31">rule 31</a> (whileLoop)
+    True           reduce using <a href="#prod31">rule 31</a> (whileLoop)
+    False          reduce using <a href="#prod31">rule 31</a> (whileLoop)
+    If             reduce using <a href="#prod31">rule 31</a> (whileLoop)
+    While          reduce using <a href="#prod31">rule 31</a> (whileLoop)
+    Read           reduce using <a href="#prod31">rule 31</a> (whileLoop)
+    Write          reduce using <a href="#prod31">rule 31</a> (whileLoop)
+    Return         reduce using <a href="#prod31">rule 31</a> (whileLoop)
+    error          reduce using <a href="#prod31">rule 31</a> (whileLoop)
+    BracketRight   reduce using <a href="#prod31">rule 31</a> (whileLoop)
+    Else           reduce using <a href="#prod31">rule 31</a> (whileLoop)
+
+
+
+<b><a name="state96">State</a> <a href="#state96">96</a></b>
+    Shortest prefix: Program BracketLeft inRead
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state96">96</a>
+    Predecessors: <a href="#state12">12</a>, <a href="#state16">16</a>, <a href="#state86">86</a>, <a href="#state88">88</a>, <a href="#state94">94</a>
+
+  <b>Kernel Items</b>
+    25 instr: inRead .
+	-lookahead: { BracketLeft, OpenPar, Ident, Minus, Tilde, Not, IntNumber, 
+                RealNumber, True, False, If, While, Read, Write, Return, 
+                error, BracketRight, Else }
+
+  <b>Parser Actions</b>
+    BracketLeft    reduce using <a href="#prod25">rule 25</a> (instr)
+    OpenPar        reduce using <a href="#prod25">rule 25</a> (instr)
+    Ident          reduce using <a href="#prod25">rule 25</a> (instr)
+    Minus          reduce using <a href="#prod25">rule 25</a> (instr)
+    Tilde          reduce using <a href="#prod25">rule 25</a> (instr)
+    Not            reduce using <a href="#prod25">rule 25</a> (instr)
+    IntNumber      reduce using <a href="#prod25">rule 25</a> (instr)
+    RealNumber     reduce using <a href="#prod25">rule 25</a> (instr)
+    True           reduce using <a href="#prod25">rule 25</a> (instr)
+    False          reduce using <a href="#prod25">rule 25</a> (instr)
+    If             reduce using <a href="#prod25">rule 25</a> (instr)
+    While          reduce using <a href="#prod25">rule 25</a> (instr)
+    Read           reduce using <a href="#prod25">rule 25</a> (instr)
+    Write          reduce using <a href="#prod25">rule 25</a> (instr)
+    Return         reduce using <a href="#prod25">rule 25</a> (instr)
+    error          reduce using <a href="#prod25">rule 25</a> (instr)
+    BracketRight   reduce using <a href="#prod25">rule 25</a> (instr)
+    Else           reduce using <a href="#prod25">rule 25</a> (instr)
+
+
+
+<b><a name="state97">State</a> <a href="#state97">97</a></b>
+    Shortest prefix: Program BracketLeft Read
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state97">97</a>
+    Predecessors: <a href="#state12">12</a>, <a href="#state16">16</a>, <a href="#state86">86</a>, <a href="#state88">88</a>, <a href="#state94">94</a>
+
+  <b>Kernel Items</b>
+    32 inRead: Read . Ident Semicolon
+
+  <b>Parser Actions</b>
+    Ident          shift, and go to state <a href="#state98">98</a>
+
+
+
+<b><a name="state98">State</a> <a href="#state98">98</a></b>
+    Shortest prefix: Program BracketLeft Read Ident
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state97">97</a>-><a href="#state98">98</a>
+    Predecessors: <a href="#state97">97</a>
+
+  <b>Kernel Items</b>
+    32 inRead: Read Ident . Semicolon
+
+  <b>Parser Actions</b>
+    Semicolon      shift, and go to state <a href="#state99">99</a>
+
+
+
+<b><a name="state99">State</a> <a href="#state99">99</a></b>
+    Shortest prefix: Program BracketLeft Read Ident Semicolon
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state97">97</a>-><a href="#state98">98</a>-><a href="#state99">99</a>
+    Predecessors: <a href="#state98">98</a>
+
+  <b>Kernel Items</b>
+    32 inRead: Read Ident Semicolon .
+	-lookahead: { BracketLeft, OpenPar, Ident, Minus, Tilde, Not, IntNumber, 
+                RealNumber, True, False, If, While, Read, Write, Return, 
+                error, BracketRight, Else }
+
+  <b>Parser Actions</b>
+    BracketLeft    reduce using <a href="#prod32">rule 32</a> (inRead)
+    OpenPar        reduce using <a href="#prod32">rule 32</a> (inRead)
+    Ident          reduce using <a href="#prod32">rule 32</a> (inRead)
+    Minus          reduce using <a href="#prod32">rule 32</a> (inRead)
+    Tilde          reduce using <a href="#prod32">rule 32</a> (inRead)
+    Not            reduce using <a href="#prod32">rule 32</a> (inRead)
+    IntNumber      reduce using <a href="#prod32">rule 32</a> (inRead)
+    RealNumber     reduce using <a href="#prod32">rule 32</a> (inRead)
+    True           reduce using <a href="#prod32">rule 32</a> (inRead)
+    False          reduce using <a href="#prod32">rule 32</a> (inRead)
+    If             reduce using <a href="#prod32">rule 32</a> (inRead)
+    While          reduce using <a href="#prod32">rule 32</a> (inRead)
+    Read           reduce using <a href="#prod32">rule 32</a> (inRead)
+    Write          reduce using <a href="#prod32">rule 32</a> (inRead)
+    Return         reduce using <a href="#prod32">rule 32</a> (inRead)
+    error          reduce using <a href="#prod32">rule 32</a> (inRead)
+    BracketRight   reduce using <a href="#prod32">rule 32</a> (inRead)
+    Else           reduce using <a href="#prod32">rule 32</a> (inRead)
+
+
+
+<b><a name="state100">State</a> <a href="#state100">100</a></b>
+    Shortest prefix: Program BracketLeft outWrite
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state100">100</a>
+    Predecessors: <a href="#state12">12</a>, <a href="#state16">16</a>, <a href="#state86">86</a>, <a href="#state88">88</a>, <a href="#state94">94</a>
+
+  <b>Kernel Items</b>
+    26 instr: outWrite .
+	-lookahead: { BracketLeft, OpenPar, Ident, Minus, Tilde, Not, IntNumber, 
+                RealNumber, True, False, If, While, Read, Write, Return, 
+                error, BracketRight, Else }
+
+  <b>Parser Actions</b>
+    BracketLeft    reduce using <a href="#prod26">rule 26</a> (instr)
+    OpenPar        reduce using <a href="#prod26">rule 26</a> (instr)
+    Ident          reduce using <a href="#prod26">rule 26</a> (instr)
+    Minus          reduce using <a href="#prod26">rule 26</a> (instr)
+    Tilde          reduce using <a href="#prod26">rule 26</a> (instr)
+    Not            reduce using <a href="#prod26">rule 26</a> (instr)
+    IntNumber      reduce using <a href="#prod26">rule 26</a> (instr)
+    RealNumber     reduce using <a href="#prod26">rule 26</a> (instr)
+    True           reduce using <a href="#prod26">rule 26</a> (instr)
+    False          reduce using <a href="#prod26">rule 26</a> (instr)
+    If             reduce using <a href="#prod26">rule 26</a> (instr)
+    While          reduce using <a href="#prod26">rule 26</a> (instr)
+    Read           reduce using <a href="#prod26">rule 26</a> (instr)
+    Write          reduce using <a href="#prod26">rule 26</a> (instr)
+    Return         reduce using <a href="#prod26">rule 26</a> (instr)
+    error          reduce using <a href="#prod26">rule 26</a> (instr)
+    BracketRight   reduce using <a href="#prod26">rule 26</a> (instr)
+    Else           reduce using <a href="#prod26">rule 26</a> (instr)
+
+
+
+<b><a name="state101">State</a> <a href="#state101">101</a></b>
+    Shortest prefix: Program BracketLeft Write
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state101">101</a>
+    Predecessors: <a href="#state12">12</a>, <a href="#state16">16</a>, <a href="#state86">86</a>, <a href="#state88">88</a>, <a href="#state94">94</a>
+
+  <b>Kernel Items</b>
+    33 outWrite: Write . exp Semicolon
+    34 outWrite: Write . Napis Semicolon
+    35 outWrite: Write . OpenPar Napis ClosePar Semicolon
+
+  <b>Parser Actions</b>
+    Napis          shift, and go to state <a href="#state104">104</a>
+    OpenPar        shift, and go to state <a href="#state106">106</a>
+    Ident          shift, and go to state <a href="#state45">45</a>
+    Minus          shift, and go to state <a href="#state26">26</a>
+    Tilde          shift, and go to state <a href="#state28">28</a>
+    Not            shift, and go to state <a href="#state30">30</a>
+    IntNumber      shift, and go to state <a href="#state37">37</a>
+    RealNumber     shift, and go to state <a href="#state38">38</a>
+    True           shift, and go to state <a href="#state41">41</a>
+    False          shift, and go to state <a href="#state42">42</a>
+
+  <b>Transitions</b>
+    exp            go to state <a href="#state102">102</a>
+    logic          go to state <a href="#state81">81</a>
+    rel            go to state <a href="#state80">80</a>
+    adding         go to state <a href="#state77">77</a>
+    term           go to state <a href="#state66">66</a>
+    bitexp         go to state <a href="#state63">63</a>
+    unar           go to state <a href="#state60">60</a>
+    factor         go to state <a href="#state36">36</a>
+    boolVar        go to state <a href="#state40">40</a>
+
+
+<b><a name="state102">State</a> <a href="#state102">102</a></b>
+    Shortest prefix: Program BracketLeft Write exp
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state101">101</a>-><a href="#state102">102</a>
+    Predecessors: <a href="#state101">101</a>
+
+  <b>Kernel Items</b>
+    33 outWrite: Write exp . Semicolon
+
+  <b>Parser Actions</b>
+    Semicolon      shift, and go to state <a href="#state103">103</a>
+
+
+
+<b><a name="state103">State</a> <a href="#state103">103</a></b>
+    Shortest prefix: Program BracketLeft Write exp Semicolon
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state101">101</a>-><a href="#state102">102</a>-><a href="#state103">103</a>
+    Predecessors: <a href="#state102">102</a>
+
+  <b>Kernel Items</b>
+    33 outWrite: Write exp Semicolon .
+	-lookahead: { BracketLeft, OpenPar, Ident, Minus, Tilde, Not, IntNumber, 
+                RealNumber, True, False, If, While, Read, Write, Return, 
+                error, BracketRight, Else }
+
+  <b>Parser Actions</b>
+    BracketLeft    reduce using <a href="#prod33">rule 33</a> (outWrite)
+    OpenPar        reduce using <a href="#prod33">rule 33</a> (outWrite)
+    Ident          reduce using <a href="#prod33">rule 33</a> (outWrite)
+    Minus          reduce using <a href="#prod33">rule 33</a> (outWrite)
+    Tilde          reduce using <a href="#prod33">rule 33</a> (outWrite)
+    Not            reduce using <a href="#prod33">rule 33</a> (outWrite)
+    IntNumber      reduce using <a href="#prod33">rule 33</a> (outWrite)
+    RealNumber     reduce using <a href="#prod33">rule 33</a> (outWrite)
+    True           reduce using <a href="#prod33">rule 33</a> (outWrite)
+    False          reduce using <a href="#prod33">rule 33</a> (outWrite)
+    If             reduce using <a href="#prod33">rule 33</a> (outWrite)
+    While          reduce using <a href="#prod33">rule 33</a> (outWrite)
+    Read           reduce using <a href="#prod33">rule 33</a> (outWrite)
+    Write          reduce using <a href="#prod33">rule 33</a> (outWrite)
+    Return         reduce using <a href="#prod33">rule 33</a> (outWrite)
+    error          reduce using <a href="#prod33">rule 33</a> (outWrite)
+    BracketRight   reduce using <a href="#prod33">rule 33</a> (outWrite)
+    Else           reduce using <a href="#prod33">rule 33</a> (outWrite)
+
+
+
+<b><a name="state104">State</a> <a href="#state104">104</a></b>
+    Shortest prefix: Program BracketLeft Write Napis
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state101">101</a>-><a href="#state104">104</a>
+    Predecessors: <a href="#state101">101</a>
+
+  <b>Kernel Items</b>
+    34 outWrite: Write Napis . Semicolon
+
+  <b>Parser Actions</b>
+    Semicolon      shift, and go to state <a href="#state105">105</a>
+
+
+
+<b><a name="state105">State</a> <a href="#state105">105</a></b>
+    Shortest prefix: Program BracketLeft Write Napis Semicolon
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state101">101</a>-><a href="#state104">104</a>-><a href="#state105">105</a>
+    Predecessors: <a href="#state104">104</a>
+
+  <b>Kernel Items</b>
+    34 outWrite: Write Napis Semicolon .
+	-lookahead: { BracketLeft, OpenPar, Ident, Minus, Tilde, Not, IntNumber, 
+                RealNumber, True, False, If, While, Read, Write, Return, 
+                error, BracketRight, Else }
+
+  <b>Parser Actions</b>
+    BracketLeft    reduce using <a href="#prod34">rule 34</a> (outWrite)
+    OpenPar        reduce using <a href="#prod34">rule 34</a> (outWrite)
+    Ident          reduce using <a href="#prod34">rule 34</a> (outWrite)
+    Minus          reduce using <a href="#prod34">rule 34</a> (outWrite)
+    Tilde          reduce using <a href="#prod34">rule 34</a> (outWrite)
+    Not            reduce using <a href="#prod34">rule 34</a> (outWrite)
+    IntNumber      reduce using <a href="#prod34">rule 34</a> (outWrite)
+    RealNumber     reduce using <a href="#prod34">rule 34</a> (outWrite)
+    True           reduce using <a href="#prod34">rule 34</a> (outWrite)
+    False          reduce using <a href="#prod34">rule 34</a> (outWrite)
+    If             reduce using <a href="#prod34">rule 34</a> (outWrite)
+    While          reduce using <a href="#prod34">rule 34</a> (outWrite)
+    Read           reduce using <a href="#prod34">rule 34</a> (outWrite)
+    Write          reduce using <a href="#prod34">rule 34</a> (outWrite)
+    Return         reduce using <a href="#prod34">rule 34</a> (outWrite)
+    error          reduce using <a href="#prod34">rule 34</a> (outWrite)
+    BracketRight   reduce using <a href="#prod34">rule 34</a> (outWrite)
+    Else           reduce using <a href="#prod34">rule 34</a> (outWrite)
+
+
+
+<b><a name="state106">State</a> <a href="#state106">106</a></b>
+    Shortest prefix: Program BracketLeft Write OpenPar
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state101">101</a>-><a href="#state106">106</a>
+    Predecessors: <a href="#state101">101</a>
+
+  <b>Kernel Items</b>
+    35 outWrite: Write OpenPar . Napis ClosePar Semicolon
+    36 exp: OpenPar . exp ClosePar
+    61 unar: OpenPar . Int ClosePar unar
+    62 unar: OpenPar . Double ClosePar unar
+    64 factor: OpenPar . exp ClosePar
+
+  <b>Parser Actions</b>
+    Napis          shift, and go to state <a href="#state107">107</a>
+    Int            shift, and go to state <a href="#state23">23</a>
+    Double         shift, and go to state <a href="#state33">33</a>
+    OpenPar        shift, and go to state <a href="#state20">20</a>
+    Ident          shift, and go to state <a href="#state45">45</a>
+    Minus          shift, and go to state <a href="#state26">26</a>
+    Tilde          shift, and go to state <a href="#state28">28</a>
+    Not            shift, and go to state <a href="#state30">30</a>
+    IntNumber      shift, and go to state <a href="#state37">37</a>
+    RealNumber     shift, and go to state <a href="#state38">38</a>
+    True           shift, and go to state <a href="#state41">41</a>
+    False          shift, and go to state <a href="#state42">42</a>
+
+  <b>Transitions</b>
+    exp            go to state <a href="#state21">21</a>
+    logic          go to state <a href="#state81">81</a>
+    rel            go to state <a href="#state80">80</a>
+    adding         go to state <a href="#state77">77</a>
+    term           go to state <a href="#state66">66</a>
+    bitexp         go to state <a href="#state63">63</a>
+    unar           go to state <a href="#state60">60</a>
+    factor         go to state <a href="#state36">36</a>
+    boolVar        go to state <a href="#state40">40</a>
+
+
+<b><a name="state107">State</a> <a href="#state107">107</a></b>
+    Shortest prefix: Program BracketLeft Write OpenPar Napis
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state101">101</a>-><a href="#state106">106</a>-><a href="#state107">107</a>
+    Predecessors: <a href="#state106">106</a>
+
+  <b>Kernel Items</b>
+    35 outWrite: Write OpenPar Napis . ClosePar Semicolon
+
+  <b>Parser Actions</b>
+    ClosePar       shift, and go to state <a href="#state108">108</a>
+
+
+
+<b><a name="state108">State</a> <a href="#state108">108</a></b>
+    Shortest prefix: Program BracketLeft Write OpenPar Napis ClosePar
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state101">101</a>-><a href="#state106">106</a>-><a href="#state107">107</a>-><a href="#state108">108</a>
+    Predecessors: <a href="#state107">107</a>
+
+  <b>Kernel Items</b>
+    35 outWrite: Write OpenPar Napis ClosePar . Semicolon
+
+  <b>Parser Actions</b>
+    Semicolon      shift, and go to state <a href="#state109">109</a>
+
+
+
+<b><a name="state109">State</a> <a href="#state109">109</a></b>
+    Shortest prefix: Program BracketLeft Write OpenPar Napis ClosePar Semicolon
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state101">101</a>-><a href="#state106">106</a>-><a href="#state107">107</a>-><a href="#state108">108</a>-><a href="#state109">109</a>
+    Predecessors: <a href="#state108">108</a>
+
+  <b>Kernel Items</b>
+    35 outWrite: Write OpenPar Napis ClosePar Semicolon .
+	-lookahead: { BracketLeft, OpenPar, Ident, Minus, Tilde, Not, IntNumber, 
+                RealNumber, True, False, If, While, Read, Write, Return, 
+                error, BracketRight, Else }
+
+  <b>Parser Actions</b>
+    BracketLeft    reduce using <a href="#prod35">rule 35</a> (outWrite)
+    OpenPar        reduce using <a href="#prod35">rule 35</a> (outWrite)
+    Ident          reduce using <a href="#prod35">rule 35</a> (outWrite)
+    Minus          reduce using <a href="#prod35">rule 35</a> (outWrite)
+    Tilde          reduce using <a href="#prod35">rule 35</a> (outWrite)
+    Not            reduce using <a href="#prod35">rule 35</a> (outWrite)
+    IntNumber      reduce using <a href="#prod35">rule 35</a> (outWrite)
+    RealNumber     reduce using <a href="#prod35">rule 35</a> (outWrite)
+    True           reduce using <a href="#prod35">rule 35</a> (outWrite)
+    False          reduce using <a href="#prod35">rule 35</a> (outWrite)
+    If             reduce using <a href="#prod35">rule 35</a> (outWrite)
+    While          reduce using <a href="#prod35">rule 35</a> (outWrite)
+    Read           reduce using <a href="#prod35">rule 35</a> (outWrite)
+    Write          reduce using <a href="#prod35">rule 35</a> (outWrite)
+    Return         reduce using <a href="#prod35">rule 35</a> (outWrite)
+    error          reduce using <a href="#prod35">rule 35</a> (outWrite)
+    BracketRight   reduce using <a href="#prod35">rule 35</a> (outWrite)
+    Else           reduce using <a href="#prod35">rule 35</a> (outWrite)
+
+
+
+<b><a name="state110">State</a> <a href="#state110">110</a></b>
+    Shortest prefix: Program BracketLeft Return
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state110">110</a>
+    Predecessors: <a href="#state12">12</a>, <a href="#state16">16</a>, <a href="#state86">86</a>, <a href="#state88">88</a>, <a href="#state94">94</a>
+
+  <b>Kernel Items</b>
+    27 instr: Return . Semicolon
+
+  <b>Parser Actions</b>
+    Semicolon      shift, and go to state <a href="#state111">111</a>
+
+
+
+<b><a name="state111">State</a> <a href="#state111">111</a></b>
+    Shortest prefix: Program BracketLeft Return Semicolon
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state110">110</a>-><a href="#state111">111</a>
+    Predecessors: <a href="#state110">110</a>
+
+  <b>Kernel Items</b>
+    27 instr: Return Semicolon .
+	-lookahead: { BracketLeft, OpenPar, Ident, Minus, Tilde, Not, IntNumber, 
+                RealNumber, True, False, If, While, Read, Write, Return, 
+                error, BracketRight, Else }
+
+  <b>Parser Actions</b>
+    BracketLeft    reduce using <a href="#prod27">rule 27</a> (instr)
+    OpenPar        reduce using <a href="#prod27">rule 27</a> (instr)
+    Ident          reduce using <a href="#prod27">rule 27</a> (instr)
+    Minus          reduce using <a href="#prod27">rule 27</a> (instr)
+    Tilde          reduce using <a href="#prod27">rule 27</a> (instr)
+    Not            reduce using <a href="#prod27">rule 27</a> (instr)
+    IntNumber      reduce using <a href="#prod27">rule 27</a> (instr)
+    RealNumber     reduce using <a href="#prod27">rule 27</a> (instr)
+    True           reduce using <a href="#prod27">rule 27</a> (instr)
+    False          reduce using <a href="#prod27">rule 27</a> (instr)
+    If             reduce using <a href="#prod27">rule 27</a> (instr)
+    While          reduce using <a href="#prod27">rule 27</a> (instr)
+    Read           reduce using <a href="#prod27">rule 27</a> (instr)
+    Write          reduce using <a href="#prod27">rule 27</a> (instr)
+    Return         reduce using <a href="#prod27">rule 27</a> (instr)
+    error          reduce using <a href="#prod27">rule 27</a> (instr)
+    BracketRight   reduce using <a href="#prod27">rule 27</a> (instr)
+    Else           reduce using <a href="#prod27">rule 27</a> (instr)
+
+
+
+<b><a name="state112">State</a> <a href="#state112">112</a></b>
+    Shortest prefix: Program BracketLeft error
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state12">12</a>-><a href="#state112">112</a>
+    Predecessors: <a href="#state12">12</a>, <a href="#state16">16</a>, <a href="#state86">86</a>, <a href="#state88">88</a>, <a href="#state94">94</a>
+
+  <b>Kernel Items</b>
+    28 instr: error .
+	-lookahead: { BracketLeft, OpenPar, Ident, Minus, Tilde, Not, IntNumber, 
+                RealNumber, True, False, If, While, Read, Write, Return, 
+                error, BracketRight, Else }
+
+  <b>Parser Actions</b>
+    BracketLeft    reduce using <a href="#prod28">rule 28</a> (instr)
+    OpenPar        reduce using <a href="#prod28">rule 28</a> (instr)
+    Ident          reduce using <a href="#prod28">rule 28</a> (instr)
+    Minus          reduce using <a href="#prod28">rule 28</a> (instr)
+    Tilde          reduce using <a href="#prod28">rule 28</a> (instr)
+    Not            reduce using <a href="#prod28">rule 28</a> (instr)
+    IntNumber      reduce using <a href="#prod28">rule 28</a> (instr)
+    RealNumber     reduce using <a href="#prod28">rule 28</a> (instr)
+    True           reduce using <a href="#prod28">rule 28</a> (instr)
+    False          reduce using <a href="#prod28">rule 28</a> (instr)
+    If             reduce using <a href="#prod28">rule 28</a> (instr)
+    While          reduce using <a href="#prod28">rule 28</a> (instr)
+    Read           reduce using <a href="#prod28">rule 28</a> (instr)
+    Write          reduce using <a href="#prod28">rule 28</a> (instr)
+    Return         reduce using <a href="#prod28">rule 28</a> (instr)
+    error          reduce using <a href="#prod28">rule 28</a> (instr)
+    BracketRight   reduce using <a href="#prod28">rule 28</a> (instr)
+    Else           reduce using <a href="#prod28">rule 28</a> (instr)
+
+
+
+<b><a name="state113">State</a> <a href="#state113">113</a></b>
+    Shortest prefix: Program BracketLeft declar
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state113">113</a>
+    Predecessors: <a href="#state11">11</a>
+
+  <b>Kernel Items</b>
+    11 declars: declars declar .
+	-lookahead: { Int, Double, Bool, error, BracketLeft, OpenPar, Ident, Minus, 
+                Tilde, Not, IntNumber, RealNumber, True, False, If, While, 
+                Read, Write, Return, BracketRight }
+
+  <b>Parser Actions</b>
+    Int            reduce using <a href="#prod11">rule 11</a> (declars)
+    Double         reduce using <a href="#prod11">rule 11</a> (declars)
+    Bool           reduce using <a href="#prod11">rule 11</a> (declars)
+    error          reduce using <a href="#prod11">rule 11</a> (declars)
+    BracketLeft    reduce using <a href="#prod11">rule 11</a> (declars)
+    OpenPar        reduce using <a href="#prod11">rule 11</a> (declars)
+    Ident          reduce using <a href="#prod11">rule 11</a> (declars)
+    Minus          reduce using <a href="#prod11">rule 11</a> (declars)
+    Tilde          reduce using <a href="#prod11">rule 11</a> (declars)
+    Not            reduce using <a href="#prod11">rule 11</a> (declars)
+    IntNumber      reduce using <a href="#prod11">rule 11</a> (declars)
+    RealNumber     reduce using <a href="#prod11">rule 11</a> (declars)
+    True           reduce using <a href="#prod11">rule 11</a> (declars)
+    False          reduce using <a href="#prod11">rule 11</a> (declars)
+    If             reduce using <a href="#prod11">rule 11</a> (declars)
+    While          reduce using <a href="#prod11">rule 11</a> (declars)
+    Read           reduce using <a href="#prod11">rule 11</a> (declars)
+    Write          reduce using <a href="#prod11">rule 11</a> (declars)
+    Return         reduce using <a href="#prod11">rule 11</a> (declars)
+    BracketRight   reduce using <a href="#prod11">rule 11</a> (declars)
+
+
+
+<b><a name="state114">State</a> <a href="#state114">114</a></b>
+    Shortest prefix: Program BracketLeft typ
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state114">114</a>
+    Predecessors: <a href="#state11">11</a>
+
+  <b>Kernel Items</b>
+    15 declar: typ . Ident Semicolon
+
+  <b>Parser Actions</b>
+    Ident          shift, and go to state <a href="#state115">115</a>
+
+
+
+<b><a name="state115">State</a> <a href="#state115">115</a></b>
+    Shortest prefix: Program BracketLeft typ Ident
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state114">114</a>-><a href="#state115">115</a>
+    Predecessors: <a href="#state114">114</a>
+
+  <b>Kernel Items</b>
+    15 declar: typ Ident . Semicolon
+
+  <b>Parser Actions</b>
+    Semicolon      shift, and go to state <a href="#state116">116</a>
+
+
+
+<b><a name="state116">State</a> <a href="#state116">116</a></b>
+    Shortest prefix: Program BracketLeft typ Ident Semicolon
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state114">114</a>-><a href="#state115">115</a>-><a href="#state116">116</a>
+    Predecessors: <a href="#state115">115</a>
+
+  <b>Kernel Items</b>
+    15 declar: typ Ident Semicolon .
+	-lookahead: { Int, Double, Bool, error, BracketLeft, OpenPar, Ident, Minus, 
+                Tilde, Not, IntNumber, RealNumber, True, False, If, While, 
+                Read, Write, Return, BracketRight }
+
+  <b>Parser Actions</b>
+    Int            reduce using <a href="#prod15">rule 15</a> (declar)
+    Double         reduce using <a href="#prod15">rule 15</a> (declar)
+    Bool           reduce using <a href="#prod15">rule 15</a> (declar)
+    error          reduce using <a href="#prod15">rule 15</a> (declar)
+    BracketLeft    reduce using <a href="#prod15">rule 15</a> (declar)
+    OpenPar        reduce using <a href="#prod15">rule 15</a> (declar)
+    Ident          reduce using <a href="#prod15">rule 15</a> (declar)
+    Minus          reduce using <a href="#prod15">rule 15</a> (declar)
+    Tilde          reduce using <a href="#prod15">rule 15</a> (declar)
+    Not            reduce using <a href="#prod15">rule 15</a> (declar)
+    IntNumber      reduce using <a href="#prod15">rule 15</a> (declar)
+    RealNumber     reduce using <a href="#prod15">rule 15</a> (declar)
+    True           reduce using <a href="#prod15">rule 15</a> (declar)
+    False          reduce using <a href="#prod15">rule 15</a> (declar)
+    If             reduce using <a href="#prod15">rule 15</a> (declar)
+    While          reduce using <a href="#prod15">rule 15</a> (declar)
+    Read           reduce using <a href="#prod15">rule 15</a> (declar)
+    Write          reduce using <a href="#prod15">rule 15</a> (declar)
+    Return         reduce using <a href="#prod15">rule 15</a> (declar)
+    BracketRight   reduce using <a href="#prod15">rule 15</a> (declar)
+
+
+
+<b><a name="state117">State</a> <a href="#state117">117</a></b>
+    Shortest prefix: Program BracketLeft Int
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state117">117</a>
+    Predecessors: <a href="#state11">11</a>
+
+  <b>Kernel Items</b>
+    17 typ: Int .
+	-lookahead: { Ident }
+
+  <b>Parser Actions</b>
+    Ident          reduce using <a href="#prod17">rule 17</a> (typ)
+
+
+
+<b><a name="state118">State</a> <a href="#state118">118</a></b>
+    Shortest prefix: Program BracketLeft Double
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state118">118</a>
+    Predecessors: <a href="#state11">11</a>
+
+  <b>Kernel Items</b>
+    18 typ: Double .
+	-lookahead: { Ident }
+
+  <b>Parser Actions</b>
+    Ident          reduce using <a href="#prod18">rule 18</a> (typ)
+
+
+
+<b><a name="state119">State</a> <a href="#state119">119</a></b>
+    Shortest prefix: Program BracketLeft Bool
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state119">119</a>
+    Predecessors: <a href="#state11">11</a>
+
+  <b>Kernel Items</b>
+    19 typ: Bool .
+	-lookahead: { Ident }
+
+  <b>Parser Actions</b>
+    Ident          reduce using <a href="#prod19">rule 19</a> (typ)
+
+
+
+<b><a name="state120">State</a> <a href="#state120">120</a></b>
+    Shortest prefix: Program BracketLeft error
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state5">5</a>-><a href="#state11">11</a>-><a href="#state120">120</a>
+    Predecessors: <a href="#state11">11</a>
+
+  <b>Kernel Items</b>
+    16 declar: error .
+	-lookahead: { Int, Double, Bool, error, BracketLeft, OpenPar, Ident, Minus, 
+                Tilde, Not, IntNumber, RealNumber, True, False, If, While, 
+                Read, Write, Return, BracketRight }
+
+  <b>Parser Actions</b>
+    Int            reduce using <a href="#prod16">rule 16</a> (declar)
+    Double         reduce using <a href="#prod16">rule 16</a> (declar)
+    Bool           reduce using <a href="#prod16">rule 16</a> (declar)
+    error          reduce using <a href="#prod16">rule 16</a> (declar)
+    BracketLeft    reduce using <a href="#prod16">rule 16</a> (declar)
+    OpenPar        reduce using <a href="#prod16">rule 16</a> (declar)
+    Ident          reduce using <a href="#prod16">rule 16</a> (declar)
+    Minus          reduce using <a href="#prod16">rule 16</a> (declar)
+    Tilde          reduce using <a href="#prod16">rule 16</a> (declar)
+    Not            reduce using <a href="#prod16">rule 16</a> (declar)
+    IntNumber      reduce using <a href="#prod16">rule 16</a> (declar)
+    RealNumber     reduce using <a href="#prod16">rule 16</a> (declar)
+    True           reduce using <a href="#prod16">rule 16</a> (declar)
+    False          reduce using <a href="#prod16">rule 16</a> (declar)
+    If             reduce using <a href="#prod16">rule 16</a> (declar)
+    While          reduce using <a href="#prod16">rule 16</a> (declar)
+    Read           reduce using <a href="#prod16">rule 16</a> (declar)
+    Write          reduce using <a href="#prod16">rule 16</a> (declar)
+    Return         reduce using <a href="#prod16">rule 16</a> (declar)
+    BracketRight   reduce using <a href="#prod16">rule 16</a> (declar)
+
+
+
+<b><a name="state121">State</a> <a href="#state121">121</a></b>
+    Shortest prefix: Program Eof
+    Shortest path: <a href="#state0">0</a>-><a href="#state4">4</a>-><a href="#state121">121</a>
+    Predecessors: <a href="#state4">4</a>
+
+  <b>Kernel Items</b>
+    8 line: Program Eof .
+	-lookahead: { EOF, Program, error }
+
+  <b>Parser Actions</b>
+    EOF            reduce using <a href="#prod8">rule 8</a> (line)
+    Program        reduce using <a href="#prod8">rule 8</a> (line)
+    error          reduce using <a href="#prod8">rule 8</a> (line)
+
+
+
+<b><a name="state122">State</a> <a href="#state122">122</a></b>
+    Shortest prefix: error
+    Shortest path: <a href="#state0">0</a>-><a href="#state122">122</a>
+    Predecessors: <a href="#state0">0</a>, <a href="#state1">1</a>
+
+  <b>Kernel Items</b>
+    9 line: error .
+	-lookahead: { EOF, Program, error }
+
+  <b>Parser Actions</b>
+    EOF            reduce using <a href="#prod9">rule 9</a> (line)
+    Program        reduce using <a href="#prod9">rule 9</a> (line)
+    error          reduce using <a href="#prod9">rule 9</a> (line)
+
+
+
+<b><a name="state123">State</a> <a href="#state123">123</a></b>
+    Shortest prefix: line
+    Shortest path: <a href="#state0">0</a>-><a href="#state123">123</a>
+    Predecessors: <a href="#state0">0</a>
+
+  <b>Kernel Items</b>
+    3 start: line .
+	-lookahead: { EOF, Program, error }
+
+  <b>Parser Actions</b>
+    EOF            reduce using <a href="#prod3">rule 3</a> (start)
+    Program        reduce using <a href="#prod3">rule 3</a> (start)
+    error          reduce using <a href="#prod3">rule 3</a> (start)
+
+
+
+</pre></hr></body></html>

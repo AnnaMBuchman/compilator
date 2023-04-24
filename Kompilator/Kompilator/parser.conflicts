@@ -1,0 +1,60 @@
+// Parser Conflict Information for grammar file "parser.y - 30/06/2020 21:46:55"
+
+Shift/Reduce conflict on symbol "BracketRight", parser will shift
+ Reduce 12:	declars -> /* empty */
+ Shift "BracketRight":	State-5 -> State-9
+  Items for From-state State 5
+    4 line: Program BracketLeft . block BracketRight 
+    5 line: Program BracketLeft . block BracketRight Komentarz2 
+    6 line: Program BracketLeft . BracketRight Komentarz2 
+    7 line: Program BracketLeft . BracketRight 
+  Items for Next-state State 9
+    6 line: Program BracketLeft BracketRight . Komentarz2 
+    7 line: Program BracketLeft BracketRight .
+	-lookahead: EOF, Program, error
+
+Shift/Reduce conflict on symbol "error", parser will shift
+ Reduce 13:	instrs -> /* empty */
+ Shift "error":	State-11 -> State-120
+  Items for From-state State 11
+    10 block: declars . instrs 
+    11 declars: declars . declar 
+  Items for Next-state State 120
+    16 declar: error .
+	-lookahead: Int, Double, Bool, error, BracketLeft, OpenPar, Ident, Minus, 
+                Tilde, Not, IntNumber, RealNumber, True, False, If, While, 
+                Read, Write, Return, BracketRight
+
+Shift/Reduce conflict on symbol "BracketRight", parser will shift
+ Reduce 13:	instrs -> /* empty */
+ Shift "BracketRight":	State-14 -> State-15
+  Items for From-state State 14
+    20 instr: BracketLeft . BracketRight 
+    21 instr: BracketLeft . instrs BracketRight 
+  Items for Next-state State 15
+    20 instr: BracketLeft BracketRight .
+	-lookahead: BracketLeft, OpenPar, Ident, Minus, Tilde, Not, IntNumber, 
+                RealNumber, True, False, If, While, Read, Write, Return, 
+                error, BracketRight, Else
+
+Reduce/Reduce conflict in state 22 on symbol "Semicolon", parser will reduce production 36
+ Reduce 36:	exp -> OpenPar, exp, ClosePar
+ Reduce 64:	factor -> OpenPar, exp, ClosePar
+
+Reduce/Reduce conflict in state 22 on symbol "ClosePar", parser will reduce production 36
+ Reduce 36:	exp -> OpenPar, exp, ClosePar
+ Reduce 64:	factor -> OpenPar, exp, ClosePar
+
+Shift/Reduce conflict on symbol "Else", parser will shift
+ Reduce 29:	cond -> If, OpenPar, exp, ClosePar, instr
+ Shift "Else":	State-87 -> State-88
+  Items for From-state State 87
+    29 cond: If OpenPar exp ClosePar instr .
+	-lookahead: BracketLeft, OpenPar, Ident, Minus, Tilde, Not, IntNumber, 
+                RealNumber, True, False, If, While, Read, Write, Return, 
+                error, BracketRight, Else
+    30 cond: If OpenPar exp ClosePar instr . Else instr 
+  Items for Next-state State 88
+    30 cond: If OpenPar exp ClosePar instr Else . instr 
+
+// End conflict information for parser

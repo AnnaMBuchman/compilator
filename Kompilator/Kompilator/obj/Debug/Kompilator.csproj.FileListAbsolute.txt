@@ -1,0 +1,18 @@
+C:\Users\48502\Documents\studia\mt\projekt zaliczeniowy\Kompilator\Kompilator\obj\Debug\Kompilator.csproj.CoreCompileInputs.cache
+C:\Users\48502\Documents\studia\mt\projekt zaliczeniowy\Kompilator\Kompilator\bin\Debug\Kompilator.exe.config
+C:\Users\48502\Documents\studia\mt\projekt zaliczeniowy\Kompilator\Kompilator\bin\Debug\Kompilator.exe
+C:\Users\48502\Documents\studia\mt\projekt zaliczeniowy\Kompilator\Kompilator\bin\Debug\Kompilator.pdb
+C:\Users\48502\Documents\studia\mt\projekt zaliczeniowy\Kompilator\Kompilator\bin\Debug\QUT.ShiftReduceParser.dll
+C:\Users\48502\Documents\studia\mt\projekt zaliczeniowy\Kompilator\Kompilator\obj\Debug\Kompilator.csproj.CopyComplete
+C:\Users\48502\Documents\studia\mt\projekt zaliczeniowy\Kompilator\Kompilator\obj\Debug\Kompilator.exe
+C:\Users\48502\Documents\studia\mt\projekt zaliczeniowy\Kompilator\Kompilator\obj\Debug\Kompilator.pdb
+C:\Users\48502\Documents\studia\mt\projekt zaliczeniowy\Kompilator\Kompilator\obj\Debug\Kompilator.csprojAssemblyReference.cache
+C:\Users\48502\Documents\studia\mt\projekt_zaliczeniowy\Kompilator\Kompilator\obj\Debug\Kompilator.csproj.CoreCompileInputs.cache
+C:\Users\48502\Documents\studia\mt\projekt_zaliczeniowy\Kompilator\Kompilator\obj\Debug\Kompilator.exe
+C:\Users\48502\Documents\studia\mt\projekt_zaliczeniowy\Kompilator\Kompilator\obj\Debug\Kompilator.pdb
+C:\Users\48502\Documents\studia\mt\projekt_zaliczeniowy\Kompilator\Kompilator\bin\Debug\Kompilator.exe.config
+C:\Users\48502\Documents\studia\mt\projekt_zaliczeniowy\Kompilator\Kompilator\bin\Debug\Kompilator.exe
+C:\Users\48502\Documents\studia\mt\projekt_zaliczeniowy\Kompilator\Kompilator\bin\Debug\Kompilator.pdb
+C:\Users\48502\Documents\studia\mt\projekt_zaliczeniowy\Kompilator\Kompilator\bin\Debug\QUT.ShiftReduceParser.dll
+C:\Users\48502\Documents\studia\mt\projekt_zaliczeniowy\Kompilator\Kompilator\obj\Debug\Kompilator.csproj.CopyComplete
+C:\Users\48502\Documents\studia\mt\projekt_zaliczeniowy\Kompilator\Kompilator\obj\Debug\Kompilator.csprojAssemblyReference.cache
